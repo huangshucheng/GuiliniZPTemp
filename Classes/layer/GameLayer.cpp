@@ -70,7 +70,7 @@ void GameLayer::update(float dt)
 		/*
 			我检测是否有：碰 ，开舵，重舵
 		*/
-
+		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_1);
 		getANewCard();
 
 		checkChongDuo();
@@ -89,6 +89,8 @@ void GameLayer::update(float dt)
 
 		//playNPC_0();
 		//getANewCard();
+		//_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_0);
+
 		m_GameState = GameLayer::MyTurn;
 
 		//logAllCard();
@@ -127,6 +129,9 @@ void GameLayer::checkPeng()
 		auto chooseLayer = ChooseLayer::create();
 		addChild(chooseLayer);
 		chooseLayer->setBtnEnable(2);
+
+		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
+
 	}
 	else
 	{
@@ -442,7 +447,7 @@ void GameLayer::createMyCardWall()
 			addChild(_card);
 			if (_card)
 			{
-				_card->setPosition(Point(x + 35 * count, y));
+				//_card->setPosition(Point(x + 35 * count, y));
 				m_CardList.pushBack(_card);
 			}
 			count++;
@@ -456,7 +461,7 @@ void GameLayer::createMyCardWall()
 			addChild(_card);
 			if (_card)
 			{
-				_card->setPosition(Point(x + 35 * count, y));
+				//_card->setPosition(Point(x + 35 * count, y));
 				m_CardList.pushBack(_card);
 			}
 			count++;
@@ -469,12 +474,11 @@ void GameLayer::createMyCardWall()
 		{
 			if (m_CardList.at(i))
 			{
-				//m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::MidButtom, Vec2(110 + 50 * i, 50)));
+				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f,0, Vec2( 40 * i, 80)));
 			}
 		}
 	}
 	
-
 	setCardState();
 }
 
