@@ -463,6 +463,18 @@ void GameLayer::createMyCardWall()
 		}
 	}
 
+	if (!m_CardList.empty())
+	{
+		for (int i = 0; i < m_CardList.size();++i)
+		{
+			if (m_CardList.at(i))
+			{
+				//m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::MidButtom, Vec2(110 + 50 * i, 50)));
+			}
+		}
+	}
+	
+
 	setCardState();
 }
 
