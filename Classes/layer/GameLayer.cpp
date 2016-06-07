@@ -49,7 +49,7 @@ bool GameLayer::init()
 		return false;
 	}
 
-	scheduleUpdate();
+	//scheduleUpdate();
 	initData();
 
 	initUI();
@@ -61,35 +61,39 @@ bool GameLayer::init()
 
 void GameLayer::update(float dt)
 {
+	/*
+		我->我下家（0）->我上家（1）->我
+	*/
+
 	switch (m_GameState)
 	{
-	case GameLayer::NPCTurn_1:	//我下家
+	case GameLayer::NPCTurn_0:	//我下家
 
 		//playNPC_1();
 
 		/*
-			我检测是否有：碰 ，开舵，重舵
+			我下家摸牌，我检测是否有：碰 ，开舵，重舵
 		*/
-		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_1);
-		getANewCard();
+		//_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_0);
+		//getANewCard();
 
-		checkChongDuo();
-		checkKaiduo();
-		checkPeng();
+		//checkChongDuo();
+		//checkKaiduo();
+		//checkPeng();
 
-		logAllCard();
-		m_GameState = GameLayer::NPCTurn_0;
+		//logAllCard();
+		m_GameState = GameLayer::NPCTurn_1;
 
 		break;
-	case GameLayer::NPCTurn_0:	//我上家
+	case GameLayer::NPCTurn_1:	//我上家
 
 		/*
-			我检测是否有：吃，碰，开舵，重舵
+			我上家摸牌，我检测是否有：吃，碰，开舵，重舵
 		*/
 
 		//playNPC_0();
 		//getANewCard();
-		//_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_0);
+		//_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_1);
 
 		m_GameState = GameLayer::MyTurn;
 
@@ -102,6 +106,55 @@ void GameLayer::update(float dt)
 		break;
 	case GameLayer::OFF:
 
+		break;
+	default:
+		break;
+	}
+}
+
+void GameLayer::playCard()
+{
+	/*
+	我->我下家（0）->我上家（1）->我
+	*/
+
+	switch (m_GameState)
+	{
+	case GameLayer::NPCTurn_0:	//我下家
+		{
+			/*
+				我下家摸牌，我检测是否有：碰 ，开舵，重舵
+			*/
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+		//::_sleep(2000);
+#else
+		//usleep(2000000);
+#endif
+			_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_0);
+			getANewCard();
+
+			checkChongDuo();
+			checkKaiduo();
+			checkPeng();
+			logAllCard();
+		}
+
+		break;
+	case GameLayer::NPCTurn_1:	//我上家
+		{
+			/*
+				我上家摸牌，我检测是否有：吃，碰，开舵，重舵
+			*/
+		}
+		break;
+	case GameLayer::MyTurn:		//我
+		{
+			/*
+				我检测是否有：吃，碰，扫，过扫，扫穿，开舵，重舵
+			*/
+		}
+		break;
+	case GameLayer::OFF:
 		break;
 	default:
 		break;
@@ -122,20 +175,19 @@ void GameLayer::playNPC_1()
 
 void GameLayer::checkPeng()
 {
-	//下家摸的牌，我检测
+	//别人摸的牌，我检测
 	if (t_Player[2].checkPengACard(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		unscheduleUpdate();
+		//unscheduleUpdate();
 		auto chooseLayer = ChooseLayer::create();
 		addChild(chooseLayer);
 		chooseLayer->setBtnEnable(2);
-
 		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 
 	}
 	else
 	{
-		scheduleUpdate();
+		//scheduleUpdate();
 	}
 }
 
@@ -147,19 +199,18 @@ void GameLayer::doPengACard()
 
 	createMyCardWall();		//重新显示牌面
 	_eventDispatcher->dispatchCustomEvent(SHOW_PENGCARD);	//显示层显示碰的牌
-
-	scheduleUpdate();
+	//scheduleUpdate();
 }
 
 void GameLayer::chooseLayerClose()
 {
 	ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我不想碰也不想吃！！"));
-	scheduleUpdate();
+	//scheduleUpdate();
 }
 
 void GameLayer::checkKaiduo()
 {
-	//别人摸的牌，我检测
+	//别人摸的牌，我检测,开夺完，自己出牌
 	if (t_Player[2].checkKaiduoACard(m_newCard.m_Type, m_newCard.m_Value))
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌开舵！！！"));
@@ -176,7 +227,7 @@ void GameLayer::checkKaiduo()
 		t_Player[2].doSao_KaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		createMyCardWall();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
-		m_GameState = GameLayer::MyTurn;	//开舵后我出牌
+		m_GameState = GameLayer::MyTurn;
 
 	}
 
@@ -186,10 +237,8 @@ void GameLayer::checkKaiduo()
 		t_Player[2].doPeng_kaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		createMyCardWall();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
-		m_GameState = GameLayer::MyTurn;	//开舵后我出牌
-
+		m_GameState = GameLayer::MyTurn;
 	}
-
 }
 
 void GameLayer::checkChongDuo()
@@ -202,7 +251,7 @@ void GameLayer::checkChongDuo()
 		t_Player[2].doChongDuo_kaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		createMyCardWall();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
-		m_GameState = GameLayer::NPCTurn_1;
+		m_GameState = GameLayer::NPCTurn_0;
 	}
 	//扫穿还没处理好
 	if (t_Player[2].checkChongDuo_saoChuan(m_newCard.m_Type, m_newCard.m_Value))
@@ -210,7 +259,7 @@ void GameLayer::checkChongDuo()
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫穿的重舵！！！"));
 		t_Player[2].doChongDuo_saoChuan(m_newCard.m_Type, m_newCard.m_Value);
 		createMyCardWall();
-		m_GameState = GameLayer::NPCTurn_1;
+		m_GameState = GameLayer::NPCTurn_0;
 	}
 }
 
@@ -319,7 +368,8 @@ void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
 		PopPai[2] = t_Player[2].popCard;
 		_eventDispatcher->dispatchCustomEvent(CREATE_CARD);
 
-		m_GameState = GameLayer::GameState::NPCTurn_1;
+		m_GameState = GameLayer::GameState::NPCTurn_0;
+		playCard();
 	}
 	else
 	{

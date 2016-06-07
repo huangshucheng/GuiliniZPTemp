@@ -10,8 +10,8 @@ using namespace cocos2d;
 using namespace ui;
 
 /*
-	0 上家
-	1 下家
+	0 下家
+	1 上家
 	2 自己
 */
 
@@ -21,8 +21,8 @@ public:
 
 	enum GameState
 	{
-		NPCTurn_0,
-		NPCTurn_1,
+		NPCTurn_0,	//我下家
+		NPCTurn_1,	//我上家
 		MyTurn,
 		OFF
 	};
@@ -59,9 +59,10 @@ private:
 	void logAllCard();
 
 	virtual void update(float dt);
-	void playNPC_0();						//上家
-	void playNPC_1();						//下家
+	void playNPC_0();						//下家
+	void playNPC_1();						//上家
 
+	void playCard();						//打牌流程
 private:
 	//我自己检测
 	void checkPeng();
