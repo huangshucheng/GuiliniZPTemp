@@ -9,7 +9,6 @@ CardSprite::~CardSprite()
 {
 
 }
-
 CardSprite* CardSprite::create(int type, int value)
 {
 	CardSprite *pRet = new(std::nothrow) CardSprite();

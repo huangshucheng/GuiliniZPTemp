@@ -77,22 +77,6 @@ void GUILayer::playerBlink_0()
 {
 	auto tink = Blink::create(1, 5);
 	auto repeate = RepeatForever::create(tink);
-	if (icon_right)
-	{
-		icon_right->runAction(repeate);
-	}
-
-	if (icon_left && icon_leftDown)
-	{
-		icon_left->stopAllActions();
-		icon_leftDown->stopAllActions();
-	}
-}
-
-void GUILayer::playerBlink_1()
-{
-	auto tink = Blink::create(1, 5);
-	auto repeate = RepeatForever::create(tink);
 	if (icon_left)
 	{
 		icon_left->runAction(repeate);
@@ -101,6 +85,22 @@ void GUILayer::playerBlink_1()
 	if (icon_right && icon_leftDown)
 	{
 		icon_right->stopAllActions();
+		icon_leftDown->stopAllActions();
+	}
+}
+
+void GUILayer::playerBlink_1()
+{
+	auto tink = Blink::create(1, 5);
+	auto repeate = RepeatForever::create(tink);
+	if (icon_right)
+	{
+		icon_right->runAction(repeate);
+	}
+
+	if (icon_left && icon_leftDown)
+	{
+		icon_left->stopAllActions();
 		icon_leftDown->stopAllActions();
 	}
 }
