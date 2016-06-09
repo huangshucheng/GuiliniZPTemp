@@ -443,7 +443,6 @@ void GameLayer::createMyCardWall()
 			addChild(_card);
 			if (_card)
 			{
-				//_card->setPosition(Point(x + 35 * count, y));
 				m_CardList.pushBack(_card);
 			}
 		}
@@ -456,7 +455,6 @@ void GameLayer::createMyCardWall()
 			addChild(_card);
 			if (_card)
 			{
-				//_card->setPosition(Point(x + 35 * count, y));
 				m_CardList.pushBack(_card);
 			}
 		}
@@ -469,12 +467,28 @@ void GameLayer::createMyCardWall()
 			if (m_CardList.at(i))
 			{
 				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f, 0, Vec2(40 * i, 80)));
+				//m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.5f, 0, Vec2(40 * i, 80)));
 			}
 		}
 	}
-	
 
 	setCardState();
+
+	refrishCardPos();	//跟新位置
+
+}
+
+void GameLayer::refrishCardPos()
+{
+	Vector<CardSprite*> _tempCardList;
+
+	for (auto &_card: m_CardList)
+	{
+		if (_card->getState() == CardSprite::CardState::OFFTouch)
+		{
+			//_card->setVisible(false);
+		}
+	}
 }
 
 void GameLayer::removeMyCardWall()
