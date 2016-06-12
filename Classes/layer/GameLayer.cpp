@@ -467,7 +467,6 @@ void GameLayer::createMyCardWall()
 			if (m_CardList.at(i))
 			{
 				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f, 0, Vec2(40 * i, 80)));
-				//m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.5f, 0, Vec2(40 * i, 80)));
 			}
 		}
 	}
