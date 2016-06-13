@@ -69,8 +69,8 @@ private:
 	void doPengACard();
 	void chooseLayerClose();
 	
-	void checkKaiduo();
-	void checkChongDuo();
+	bool checkKaiduo();
+	bool checkChongDuo();
 
 	bool checkChi();
 	void doChiACard();
