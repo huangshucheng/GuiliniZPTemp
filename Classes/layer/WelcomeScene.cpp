@@ -194,7 +194,7 @@ void WelcomeScene::onKeyReleased(EventKeyboard::KeyCode keycode, Event* event)
 				}
 				LOGD("end game<<<<");
 #else
-				Director::getInstance()->end();
+				//Director::getInstance()->end();
 #endif
 			}
 		}
