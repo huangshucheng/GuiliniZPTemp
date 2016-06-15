@@ -28,14 +28,6 @@ public:
 		OFF
 	};
 
-	enum ChiType
-	{
-		Chi_2_7_10,
-		Chi_A_B_C,
-		Chi_A_A_a,
-		Chi_A_A_a_a
-	};
-
 	GameLayer();
 	~GameLayer();
 
@@ -111,6 +103,5 @@ private:
 	Vector<CardSprite* > m_CardList;		//牌数组
 
 	GameState m_GameState;
-	ChiType m_ChiType;
 };
 

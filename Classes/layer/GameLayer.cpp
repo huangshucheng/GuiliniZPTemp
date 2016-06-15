@@ -37,7 +37,6 @@ m_GameState(MyTurn)
 
 	auto _listener_3 = EventListenerCustom::create(SHOW_CHICARDLAYER, [=](EventCustom*event){
 		showChiCardLayer();
-		//doChiACard();
 	});
 
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_1, 1);
@@ -78,8 +77,7 @@ void GameLayer::update(float dt)
 	{
 	case GameLayer::NPCTurn_1:	//我下家
 		
-		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_1);
-		//playNPC_1();
+		//_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_1);
 
 		/*
 			下家起一张牌
@@ -165,12 +163,6 @@ void GameLayer::update(float dt)
 
 		break;
 	case GameLayer::MyTurn:		//我出牌
-
-		//scheduleOnce([=](float dt){
-		//	_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
-		//	log("PLAYERBLINK_2");
-		//}, 1 / 30, "PLAYERBLINK_2");
-
 		break;
 	case GameLayer::OFF:		//轮到我起牌
 		/*
