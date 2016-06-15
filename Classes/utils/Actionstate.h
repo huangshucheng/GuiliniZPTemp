@@ -4,7 +4,7 @@
 #include <set>
 #include "cocos2d.h"
 USING_NS_CC;
-
+//http://www.waitingfy.com/archives/1273   状态机
 class Actionstate:public Ref
 {
 public:

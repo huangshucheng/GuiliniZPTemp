@@ -60,7 +60,6 @@ bool GameLayer::init()
 
 	scheduleUpdate();
 	initData();
-
 	initUI();
 
 	addChild(ShowLayer::create(this));
@@ -83,23 +82,20 @@ void GameLayer::update(float dt)
 			下家起一张牌
 			我检测是否有：碰 ，开舵，重舵
 		*/
-		
+		/*
 		std::cout << "下家起牌~~~~~~~~~~~~~~~~" << std::endl;
 		getANewCard();
 
 		if (checkChongDuo())
 		{
-			t_Player[2].m_ActionState->doEvent("ChongDuo");
 			std::cout << "重舵" << std::endl;
 		}
 		else if (checkKaiduo())
 		{
-			t_Player[2].m_ActionState->doEvent("KaiDuo");
 			std::cout << "开舵" << std::endl;
 		}
 		else if (checkPeng())
 		{
-			t_Player[2].m_ActionState->doEvent("Peng");
 			unscheduleUpdate();
 			auto chooseLayer = ChooseLayer::create();
 			addChild(chooseLayer);
@@ -108,10 +104,10 @@ void GameLayer::update(float dt)
 		
 		//logAllCard();
 		m_GameState = GameLayer::NPCTurn_0;
-		
+		*/
 		break;
 	case GameLayer::NPCTurn_0:	//我上家
-		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_0);
+		//_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_0);
 
 		/*
 			上家起一张牌
@@ -121,8 +117,9 @@ void GameLayer::update(float dt)
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 		//::_sleep(2000);
 #else
-		usleep(2000000);
+		//usleep(2000000);
 #endif
+		/*
 		std::cout << "上家起牌~~~~~~~~~~~~~~~~" << std::endl;
 
 		getANewCard();
@@ -160,7 +157,7 @@ void GameLayer::update(float dt)
 		logAllCard();
 		
 		m_GameState = GameLayer::MyTurn;
-
+		*/
 		break;
 	case GameLayer::MyTurn:		//我出牌
 		break;
@@ -228,12 +225,18 @@ void GameLayer::update(float dt)
 	}
 }
 
+void GameLayer::changeState(StateManager* _state)
+{
+	//delete m_currentState;
+	//m_currentState = _state;
+}
+
 void GameLayer::schePlayerCallBack_1(float dt)	//下家
 {
 	//检测吃碰等，若没有，下家直接摸牌，我和上家检测
 	//我：碰 ，开舵，重舵
 
-	std::cout << "下家起牌~~~~~~~~~~~~~~~~" << std::endl;
+	/*std::cout << "下家起牌~~~~~~~~~~~~~~~~" << std::endl;
 	getANewCard();
 
 	if (checkChongDuo())
@@ -252,7 +255,7 @@ void GameLayer::schePlayerCallBack_1(float dt)	//下家
 		auto chooseLayer = ChooseLayer::create();
 		addChild(chooseLayer);
 		chooseLayer->setBtnEnable(2);
-	}
+	}*/
 }
 
 void GameLayer::schePlayerCallBack_0(float dt)	//上家

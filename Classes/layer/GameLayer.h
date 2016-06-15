@@ -6,6 +6,7 @@
 #include "ui/UIButton.h"
 #include "Card/CardSprite.h"
 #include "utils/Actionstate.h"
+#include "State/StateManager.h"
 
 using namespace cocos2d;
 using namespace ui;
@@ -61,6 +62,8 @@ private:
 	void logAllCard();
 
 	virtual void update(float dt);
+
+	void changeState(StateManager* _state);
 
 	void schePlayerCallBack_0(float dt);	//上家
 	void schePlayerCallBack_1(float dt);	//下家
