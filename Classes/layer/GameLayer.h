@@ -6,7 +6,7 @@
 #include "ui/UIButton.h"
 #include "Card/CardSprite.h"
 #include "utils/Actionstate.h"
-#include "State/StateManager.h"
+#include "StateManager.h"
 
 using namespace cocos2d;
 using namespace ui;
@@ -39,13 +39,13 @@ public:
 public:
 	void startCallBack(Ref* ref);
 	void overCallBack(Ref* ref);
-
+	void logAllCard();
 public:
 	virtual bool onTouchBegan(Touch *touch, Event *unused_event);
 	virtual void onTouchMoved(Touch *touch, Event *unused_event);
 	virtual void onTouchEnded(Touch *touch, Event *unused_event);
 
-private:
+public:
 
 	void initData();
 	void initUI();
@@ -59,8 +59,6 @@ private:
 	void setCardState();
 	void refrishCardPos();					//更新位置
 
-	void logAllCard();
-
 	virtual void update(float dt);
 
 	void changeState(StateManager* _state);
@@ -69,7 +67,7 @@ private:
 	void schePlayerCallBack_1(float dt);	//下家
 	void schePlayerCallBack_2(float dt);	//自己
 
-private:
+public:
 	//我自己检测
 	bool checkPeng();
 	void doPengACard();
@@ -94,7 +92,7 @@ public:
 	std::vector<ChiCard>	m_TempChiCard;		//所有可吃的牌
 	std::vector<CardData>	m_TempChiList;	//所有可吃的牌(只管A_A_a_a和A_A_a)
 
-private:
+public:
 	bool m_isStartGame;
 	ZiPaiManage t_ZPManage;					//管理器
 
@@ -106,5 +104,6 @@ private:
 	Vector<CardSprite* > m_CardList;		//牌数组
 
 	GameState m_GameState;
+	StateManager* m_CurrState;
 };
 

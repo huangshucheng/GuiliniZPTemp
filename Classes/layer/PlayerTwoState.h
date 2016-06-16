@@ -3,8 +3,12 @@
 #include "StateManager.h"
 #include "cocos2d.h"
 
-class PlayerOneState : public StateManager
+class PlayerTwoState : public StateManager
 {
 public:
+	PlayerTwoState();
+	~PlayerTwoState();
+
 	virtual void Update();
+	void myCheck();
 };
