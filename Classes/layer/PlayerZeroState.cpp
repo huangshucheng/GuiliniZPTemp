@@ -11,10 +11,11 @@ USING_NS_CC;
 PlayerZeroState::PlayerZeroState()
 {
 	std::cout << "上家[0]摸牌打牌" << std::endl;
-	Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_0);
 
 	auto callfunc = CallFunc::create([this](){
 		GAMELAYER->getANewCard();
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_0);
+
 		myCheck();
 	});
 	auto delayTime = DelayTime::create(1.5f);

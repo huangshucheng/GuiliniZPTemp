@@ -63,10 +63,6 @@ public:
 
 	void changeState(StateManager* _state);
 
-	void schePlayerCallBack_0(float dt);	//上家
-	void schePlayerCallBack_1(float dt);	//下家
-	void schePlayerCallBack_2(float dt);	//自己
-
 public:
 	//我自己检测
 	bool checkPeng();

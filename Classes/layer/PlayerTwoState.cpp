@@ -14,6 +14,8 @@ PlayerTwoState::PlayerTwoState()
 
 	if (!UserDefault::getInstance()->getBoolForKey(ISFIRSTPLAY))
 	{
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_2);
+
 		/*
 			false:庄家，第一次打牌，不摸牌
 			true:第二圈开始，摸牌
@@ -25,10 +27,10 @@ PlayerTwoState::PlayerTwoState()
 		if (UserDefault::getInstance()->getBoolForKey(ISGETORPLAY))
 		{
 			//摸牌不打牌
-			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_2);
-
 			auto callfunc = CallFunc::create([this](){
 				GAMELAYER->getANewCard();
+				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_2);
+
 				myCheck();
 			});
 			auto delayTime = DelayTime::create(1.5f);
@@ -38,6 +40,7 @@ PlayerTwoState::PlayerTwoState()
 		else
 		{
 			//打牌不摸牌
+			Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_2);
 		}
 	}
 }

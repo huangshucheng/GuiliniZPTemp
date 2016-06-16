@@ -14,14 +14,12 @@
 #include "PlayerTwoState.h"
 #include "PlayerOneState.h"
 #include "PlayerZeroState.h"
+#include "../AccountsLayer.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
 #else
-
-#include <pthread.h>
 #include <unistd.h>
-
 #endif
 
 GameLayer::GameLayer():
@@ -73,7 +71,6 @@ bool GameLayer::init()
 	UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//我是否可以出牌（能否触摸）
 
 	changeState(new PlayerTwoState());
-
 	return true;
 }
 
@@ -247,43 +244,6 @@ void GameLayer::changeState(StateManager* _state)
 	m_CurrState = _state;
 }
 
-void GameLayer::schePlayerCallBack_1(float dt)	//下家
-{
-	//检测吃碰等，若没有，下家直接摸牌，我和上家检测
-	//我：碰 ，开舵，重舵
-
-	/*std::cout << "下家起牌~~~~~~~~~~~~~~~~" << std::endl;
-	getANewCard();
-
-	if (checkChongDuo())
-	{
-		std::cout << "重舵" << std::endl;
-	}
-	else if (checkKaiduo())
-	{
-		std::cout << "开舵" << std::endl;
-	}
-	else if (checkPeng())
-	{
-		unschedule(schedule_selector(GameLayer::schePlayerCallBack_0));
-		unschedule(schedule_selector(GameLayer::schePlayerCallBack_1));
-		unschedule(schedule_selector(GameLayer::schePlayerCallBack_2));
-		auto chooseLayer = ChooseLayer::create();
-		addChild(chooseLayer);
-		chooseLayer->setBtnEnable(2);
-	}*/
-}
-
-void GameLayer::schePlayerCallBack_0(float dt)	//上家
-{
-	//检测，若没有，直接摸牌，我和下家检测
-}
-
-void GameLayer::schePlayerCallBack_2(float dt)	//自己
-{
-
-}
-
 bool GameLayer::checkPeng()
 {
 	//下家摸的牌，我检测
@@ -301,12 +261,10 @@ void GameLayer::doPengACard()
 
 	UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//碰完后我打牌
 	UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//可以打牌
-	//changeState(new PlayerTwoState());
+	changeState(new PlayerTwoState());								//碰完后我打牌
 
 	createMyCardWall();		//重新显示牌面
 	_eventDispatcher->dispatchCustomEvent(SHOW_PENGCARD);	//显示层显示碰的牌
-	scheduleUpdate();
-
 }
 
 bool GameLayer::checkChi()
@@ -323,7 +281,6 @@ bool GameLayer::checkChi()
 		m_TempChiList.clear();
 	}
 
-	//上家摸的牌，我检测
 	/*if (t_Player[2].checkChiACard1_2_3(m_newCard.m_Type, m_newCard.m_Value))
 	{
 		for (auto &_data:t_Player[2].m_TempChiCardVec)
@@ -407,7 +364,6 @@ bool GameLayer::checkSaochuan()
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);
 		isAction = true;
 
-		//m_GameState = GameLayer::MyTurn;
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//扫穿完后我打牌
 		UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//可以打牌
 	}
@@ -420,7 +376,6 @@ bool GameLayer::checkSaochuan()
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);
 		isAction = true;
 
-		//m_GameState = GameLayer::MyTurn;
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//扫穿完后我打牌
 		UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//可以打牌
 	}
@@ -441,7 +396,6 @@ bool GameLayer::checkSao()
 		createMyCardWall();
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCARD);
 
-		//m_GameState = GameLayer::MyTurn;
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//扫完后我打牌
 		UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//可以打牌
 
@@ -453,7 +407,7 @@ bool GameLayer::checkSao()
 void GameLayer::chooseLayerClose()
 {
 	ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我不想碰也不想吃！！"));
-	changeState(new PlayerTwoState());
+	changeState(new PlayerTwoState());	//有问题
 }
 
 bool GameLayer::checkKaiduo()
@@ -544,6 +498,7 @@ void GameLayer::initData()
 void GameLayer::onEnter()
 {
 	Layer::onEnter();
+
 	auto listenerEvent = EventListenerTouchOneByOne::create();
 	listenerEvent->onTouchBegan = CC_CALLBACK_2(GameLayer::onTouchBegan, this);
 	listenerEvent->onTouchMoved = CC_CALLBACK_2(GameLayer::onTouchMoved, this);
@@ -603,10 +558,10 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *unused_event)
 
 void GameLayer::onTouchMoved(Touch *touch, Event *unused_event)
 {
-		if (m_TempMoveCard)
-		{
-			m_TempMoveCard->setPosition(touch->getLocation());
-		}
+	if (m_TempMoveCard)
+	{
+		m_TempMoveCard->setPosition(touch->getLocation());
+	}
 }
 
 void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
@@ -681,7 +636,6 @@ void GameLayer::initUI()
 		addChild(back_btn);
 		back_btn->setPosition(CommonFunction::getVisibleAchor(0.5, 1, Vec2(-135, -back_btn->getContentSize().height / 2 - 10)));
 		back_btn->addClickEventListener([this](Ref*){
-			//addChild(BackLayer::create(), 100);
 			Director::getInstance()->replaceScene(WelcomeScene::createScene());
 		});
 	}
@@ -703,7 +657,9 @@ void GameLayer::initUI()
 void GameLayer::startCallBack(Ref* ref)
 {
 	UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);
+	_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 	xipai();
+	//addChild(AccountsLayer::create());
 }
 
 void GameLayer::overCallBack(Ref* ref)
@@ -718,6 +674,7 @@ void GameLayer::getANewCard()
 	if (t_newCard.m_CardNum <= 0)
 	{
 		cout << "黄庄" << endl;
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, AccountsLayer::createScene()));
 		return;
 	}
 
@@ -816,9 +773,7 @@ void GameLayer::createMyCardWall()
 	}
 
 	setCardState();
-
 	refrishCardPos();	//跟新位置
-
 }
 
 void GameLayer::refrishCardPos()

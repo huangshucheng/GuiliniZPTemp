@@ -2,10 +2,13 @@
 #include "AccountsLayer.h"
 #include "ui/UIButton.h"
 #include <iostream>
+#include "utils/CommonFunction.h"
+#include "layer/GameScene.h"
+#include "layer/WelcomeScene.h"
+
 using namespace std;
 using namespace ui;
 
-#define visibleSize  Director::getInstance()->getVisibleSize()
 #define WIN_DATA Win::getInstance()
 
 AccountsLayer::AccountsLayer()
@@ -18,136 +21,95 @@ AccountsLayer::~AccountsLayer()
 	
 }
 
+Scene* AccountsLayer::createScene()
+{
+	auto s = Scene::create();
+	auto l = AccountsLayer::create();
+	s->addChild(l);
+	return s;
+}
+
 void AccountsLayer::onEnter()
 {
-	LayerColor::onEnter();
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->setSwallowTouches(true);
-	listener->onTouchBegan = [](Touch* t,Event* e){
-	
-		return true;
-	};
-	listener->onTouchMoved = [](Touch* t, Event* e){};
-	listener ->onTouchEnded = [](Touch* t, Event* e){};
-	_eventDispatcher->addEventListenerWithSceneGraphPriority(listener,this);
+	Pop::onEnter();
+}
+
+void AccountsLayer::onKeyReleased(EventKeyboard::KeyCode keycode, Event* event)
+{
+	if (event->getType() == Event::Type::KEYBOARD)
+	{
+		event->stopPropagation();
+		{
+			if (keycode == EventKeyboard::KeyCode::KEY_BACK)  //返回
+			{
+				close();
+			}
+		}
+	}
 }
 
 bool AccountsLayer::init()
 {
-	if (!LayerColor::init())
+	if (!Pop::init())
 	{
 		return false;
 	}
 
 	addUI();
-	getHushu();
 	return true;
 }
 
 void AccountsLayer::addUI()
 {
 
-	auto bg = Sprite::create("zhuomian.png");
-	bg->setPosition(visibleSize.width / 2, visibleSize.height / 2);
-	addChild(bg);
-	//胡数
-	int hushu = getHushu();
-	auto hushu_label = Label::createWithTTF(StringUtils::format("hushu:%d", hushu), "fonts/arial.ttf", 32);
-	if (hushu_label)
+	auto bg_sp = Sprite::create("zhuomian.png");
+	if (bg_sp)
 	{
-		hushu_label->setPosition(visibleSize.width / 2, visibleSize.height / 2 + 150);
-		addChild(hushu_label);
+		m_popNode->addChild(bg_sp);
 	}
 
-
+	auto gray_sp = Sprite::create("account/ima_gray.png");
+	if (gray_sp && bg_sp)
+	{
+		bg_sp->addChild(gray_sp);
+		gray_sp->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, bg_sp, Vec2(0, 45)));
+	}
 	//返回
-	auto backBtn = Button::create("back.png");
-	backBtn->addClickEventListener(CC_CALLBACK_1(AccountsLayer::quiteCallback, this));
-	backBtn->setPosition(Vec2(visibleSize.width / 3, visibleSize.height / 8));
-	addChild(backBtn);
+	auto backBtn = Button::create("account/btn_back.png");
+	if (backBtn)
+	{
+		bg_sp->addChild(backBtn);
+		backBtn->addClickEventListener(CC_CALLBACK_1(AccountsLayer::quiteCallback, this));
+		float _width = backBtn->getContentSize().width ;
+		float _heignt = backBtn->getContentSize().height ;
 
+		backBtn->setPosition(CommonFunction::getVisibleAchor(1, 1, bg_sp, Vec2(-_width, -_heignt)));
+	}
 	//重新开始
-	auto restartBtn = Button::create("again.png");
-	restartBtn->addClickEventListener(CC_CALLBACK_1(AccountsLayer::restartCallback, this));
-	restartBtn->setPosition(Vec2(visibleSize.width / 3 * 2, visibleSize.height / 8));
-	addChild(restartBtn);
-
-	for (int i = 0; i < WIN_DATA->m_vec[0].size();i++)
+	auto restartBtn = Button::create("account/btn_again.png");
+	if (restartBtn)
 	{
-		Sprite* card_1 = createSmallCardSprite(0, WIN_DATA->m_vec[0][i]);
-		SpriteVec.push_back(card_1);
-		//Sprite* a = Sprite::create("frontImage.png");
-		//a->setScale(0.3f);
-		SpriteVec.push_back(card_1);
-		
+		restartBtn->addClickEventListener(CC_CALLBACK_1(AccountsLayer::restartCallback, this));
+		auto _he = restartBtn->getContentSize().height;
+		restartBtn->setPosition(CommonFunction::getVisibleAchor(Anchor::MidButtom, bg_sp, Vec2(0, _he)));
+		bg_sp->addChild(restartBtn);
 	}
-
-	for (int i = 0; i < WIN_DATA->m_vec[1].size(); i++)
-	{
-		Sprite* card_2 = createSmallCardSprite(0, WIN_DATA->m_vec[1][i]);
-		SpriteVec.push_back(card_2);
-		//Sprite* a = Sprite::create("bgImage.png");
-		//a->setScale(0.3f);
-		SpriteVec.push_back(card_2);
-	}
-
-	for (int i = 0; i < SpriteVec.size(); i++)
-	{
-		if (SpriteVec[i])
-		{
-			SpriteVec[i]->setPosition(Vec2(visibleSize.width / 3 + (i % 10)*SpriteVec[i]->getContentSize().width / 3, (i / 10)*SpriteVec[i]->getContentSize().height / 3 + 200));
-			addChild(SpriteVec[i]);
-		}
-
-	}
-
-}
-
-int AccountsLayer::getHushu()
-{
-	int hushu = UserDefault::getInstance()->getIntegerForKey("HUSHU",0);
-	return hushu;
 }
 
 void AccountsLayer::quiteCallback(Ref* sender)
 {
-	//log("back");
-	WIN_DATA->clearVector();
-
 	if (this->getParent())
 	{
-		this->removeFromParent();
-
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, WelcomeScene::createScene()));
+		//this->removeFromParent();
 	}
 }
 
 void AccountsLayer::restartCallback(Ref* sender)
 {
-	//log("again");
-	WIN_DATA->clearVector();
-
 	if (this->getParent())
 	{
-		this->removeFromParent();
-
+		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, GameScene::createScene()));
+		//this->removeFromParent();
 	}
-}
-
-//短牌创建
-Sprite* AccountsLayer::createSmallCardSprite(int p_Type, int p_Value)
-{
-	Sprite* card;
-	if (p_Type == 0)
-	{
-		//小写 out_zipx0-10.png	
-		card = Sprite::create(StringUtils::format("duanpai_x%d.png", p_Value));
-		//card->setScale(0.5);
-	}
-	if (p_Type == 1)
-	{
-		//小写 out_zipx0-10.png	
-		card = Sprite::create(StringUtils::format("duanpai_d%d.png", p_Value));
-		//card->setScale(0.5);
-	}
-	return card;
 }
