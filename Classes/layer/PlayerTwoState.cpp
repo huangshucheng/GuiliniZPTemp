@@ -3,6 +3,7 @@
 #include "utils/GetLayer.h"
 #include "ChooseLayer.h"
 #include "PlayerOneState.h"
+#include "GameLayer.h"
 
 USING_NS_CC;
 
@@ -11,7 +12,7 @@ USING_NS_CC;
 PlayerTwoState::PlayerTwoState()
 {
 	std::cout << "我[2]摸牌打牌" << std::endl;
-
+	UserDefault::getInstance()->setIntegerForKey(GAMESTATE, 2);
 	if (!UserDefault::getInstance()->getBoolForKey(ISFIRSTPLAY))
 	{
 		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_2);

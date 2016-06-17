@@ -22,7 +22,7 @@
 #include <unistd.h>
 #endif
 
-GameLayer::GameLayer():
+GameLayer::GameLayer() :
 m_isStartGame(true),
 m_line(nullptr),
 m_TempMoveCard(nullptr),
@@ -69,6 +69,8 @@ bool GameLayer::init()
 	UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);	//是否第一次打牌
 	UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, true);	//只摸牌不打牌
 	UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//我是否可以出牌（能否触摸）
+	UserDefault::getInstance()->setBoolForKey(ISHZ, false);			//没有黄庄	
+	UserDefault::getInstance()->setIntegerForKey(GAMESTATE,2);		//设置当前状态(我)
 
 	changeState(new PlayerTwoState());
 	return true;
@@ -407,7 +409,23 @@ bool GameLayer::checkSao()
 void GameLayer::chooseLayerClose()
 {
 	ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我不想碰也不想吃！！"));
-	changeState(new PlayerTwoState());	//有问题
+	int _state = UserDefault::getInstance()->getIntegerForKey(GAMESTATE, 0);
+	if (_state == 0)
+	{
+		changeState(new PlayerTwoState());
+	}
+	else if (_state == 1)
+	{
+		changeState(new PlayerZeroState());
+	}
+	else if (_state == 2)
+	{
+		changeState(new PlayerOneState());
+	}
+	else
+	{
+		changeState(new PlayerTwoState());
+	}
 }
 
 bool GameLayer::checkKaiduo()
@@ -622,10 +640,10 @@ void GameLayer::initUI()
 	if (bg_sp)
 	{
 		addChild(bg_sp);
-		float w = bg_sp->getContentSize().width;
-		float h = bg_sp->getContentSize().height;
 
-		bg_sp->setScale(VISIBLESIZE.width / w, VISIBLESIZE.height / h);
+		//float w = bg_sp->getContentSize().width;
+		//float h = bg_sp->getContentSize().height;
+		//bg_sp->setScale(VISIBLESIZE.width / w, VISIBLESIZE.height / h);
 
 		bg_sp->setPosition(CommonFunction::getVisibleAchor(Anchor::Center,this,Vec2::ZERO));
 	}
@@ -660,6 +678,10 @@ void GameLayer::startCallBack(Ref* ref)
 	_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 	xipai();
 	//addChild(AccountsLayer::create());
+	_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);			/****/
+	_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);		/****/
+	_eventDispatcher->dispatchCustomEvent(SHOW_SAOCARD);		/****/
+	_eventDispatcher->dispatchCustomEvent(SHOW_PENGCARD);		/****/
 }
 
 void GameLayer::overCallBack(Ref* ref)
@@ -674,6 +696,8 @@ void GameLayer::getANewCard()
 	if (t_newCard.m_CardNum <= 0)
 	{
 		cout << "黄庄" << endl;
+		UserDefault::getInstance()->setBoolForKey(ISHZ, true);			//黄庄	
+
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, AccountsLayer::createScene()));
 		return;
 	}

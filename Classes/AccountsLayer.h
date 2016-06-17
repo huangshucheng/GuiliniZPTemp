@@ -9,7 +9,7 @@ using namespace cocos2d;
 	结算界面
 */
 
-class AccountsLayer: public Pop
+class AccountsLayer: public Layer
 {
 public:
 	AccountsLayer();

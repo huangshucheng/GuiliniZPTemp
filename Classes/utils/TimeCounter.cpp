@@ -18,7 +18,7 @@ bool TimeCounter::init()
 	}
 
 	m_isCounting = false;
-	schedule(schedule_selector(TimeCounter::myupdate, this), 1);
+	schedule(schedule_selector(TimeCounter::myupdate),1);
 
 	auto clock_sp = Sprite::create("clock.png");
 	if (clock_sp)
@@ -41,7 +41,10 @@ void TimeCounter::myupdate(float dt)
 	}
 
 	m_fCBTime--;
-	m_timeLabel->setString(Value(m_fCBTime).asString());
+	if (m_timeLabel)
+	{
+		m_timeLabel->setString(Value(m_fCBTime).asString());
+	}
 	if (m_fCBTime == 0)
 	{
 		m_func();
@@ -51,7 +54,11 @@ void TimeCounter::myupdate(float dt)
 
 void TimeCounter::start(int fCBTime, std::function<void()>func)
 {
-	m_timeLabel->setString(Value(fCBTime).asString());
+	if (m_timeLabel)
+	{
+		m_timeLabel->setString(Value(fCBTime).asString());
+
+	}
 	m_fCBTime = fCBTime;
 	m_func = func;
 	m_isCounting = true;
