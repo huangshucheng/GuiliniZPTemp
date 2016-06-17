@@ -678,10 +678,11 @@ void GameLayer::startCallBack(Ref* ref)
 	_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 	xipai();
 	//addChild(AccountsLayer::create());
-	_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);			/****/
-	_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);		/****/
-	_eventDispatcher->dispatchCustomEvent(SHOW_SAOCARD);		/****/
-	_eventDispatcher->dispatchCustomEvent(SHOW_PENGCARD);		/****/
+	_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);			
+	_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);		
+	_eventDispatcher->dispatchCustomEvent(SHOW_SAOCARD);		
+	_eventDispatcher->dispatchCustomEvent(SHOW_PENGCARD);		
+	_eventDispatcher->dispatchCustomEvent(SHOW_CHICARD);
 }
 
 void GameLayer::overCallBack(Ref* ref)
@@ -791,7 +792,7 @@ void GameLayer::createMyCardWall()
 		{
 			if (m_CardList.at(i))
 			{
-				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f, 0, Vec2(42 * i, 80)));
+				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f, 0, Vec2(45 * i, 80)));
 			}
 		}
 	}
