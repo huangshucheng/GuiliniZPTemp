@@ -6,6 +6,9 @@
 
 using namespace cocos2d;
 
+/*
+	翻醒
+*/
 class RatioLayer : public Layer
 {
 public:
@@ -20,7 +23,6 @@ public:
 	void AddUI();
 
 	void checkRatio();
-
 
 private:
 

@@ -1,13 +1,10 @@
-﻿
-
-#include "RatioLayer.h"
-
+﻿#include "RatioLayer.h"
 #include "utils/CommonFunction.h"
-
 #include "ZiPai.h"
 #include "utils/Constant.h"
 
 int RatioLayer::count = 0;
+
 RatioLayer::RatioLayer():
 ratio(nullptr),
 _gameLayer(nullptr),

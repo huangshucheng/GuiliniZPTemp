@@ -16,6 +16,8 @@
 #include "PlayerZeroState.h"
 #include "../AccountsLayer.h"
 #include "utils/GetScore.h"
+#include "ShowOneLayer.h"
+#include "utils/GetLayer.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
@@ -78,7 +80,11 @@ bool GameLayer::init()
 	initData();
 	initUI();
 
-	addChild(ShowLayer::create(this));
+	addChild(ShowLayer::create(this));		//自己显示操作的牌
+
+	auto _oneLayer = ShowOneLayer::create(this);
+	addChild(_oneLayer);	//下家显示
+	GetLayer::getInstance()->setOneLayer(_oneLayer);
 
 	UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);	//是否第一次打牌
 	UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, true);	//只摸牌不打牌

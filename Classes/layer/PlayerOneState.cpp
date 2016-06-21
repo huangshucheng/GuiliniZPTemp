@@ -91,6 +91,8 @@ void PlayerOneState::oneCheck()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家碰"));
 		GAMELAYER->t_Player[1].doPengACard(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
+		//下家显示碰的牌
+		GetLayer::getInstance()->getOneLayer()->showPengCard();	//做到这里
 	}
 	else if (GAMELAYER->t_Player[1].checkChiACard2_7_10(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
 	{
@@ -102,7 +104,6 @@ void PlayerOneState::oneCheck()
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家吃牌"));
 		GAMELAYER->t_Player[1].doChiA_B_C(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value,0);
 	}
-
 }
 
 void PlayerOneState::zeroCheck()
