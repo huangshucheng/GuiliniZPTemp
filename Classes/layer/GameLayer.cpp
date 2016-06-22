@@ -18,6 +18,7 @@
 #include "utils/GetScore.h"
 #include "ShowOneLayer.h"
 #include "utils/GetLayer.h"
+#include "RatioLayer.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
@@ -55,10 +56,16 @@ _note(nullptr)
 	
 	});
 
+	auto _listener_5 = EventListenerCustom::create(SHOW_RATIOLAYER, [=](EventCustom*event){
+		RatioLayer* ratiolayer = RatioLayer::create(this);
+		addChild(ratiolayer);
+	});
+
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_1, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_2, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_3, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_4, 1);
+	_eventDispatcher->addEventListenerWithFixedPriority(_listener_5, 1);
 }
 
 GameLayer::~GameLayer()
@@ -67,6 +74,7 @@ GameLayer::~GameLayer()
 	_eventDispatcher->removeCustomEventListeners(CLOSE_CHOOSELAYER);
 	_eventDispatcher->removeCustomEventListeners(SHOW_CHICARDLAYER);
 	_eventDispatcher->removeCustomEventListeners(PLAYER_CHI);
+	_eventDispatcher->removeCustomEventListeners(SHOW_RATIOLAYER);
 }
 
 bool GameLayer::init()
