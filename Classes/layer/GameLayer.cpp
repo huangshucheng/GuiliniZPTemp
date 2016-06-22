@@ -19,6 +19,7 @@
 #include "ShowOneLayer.h"
 #include "utils/GetLayer.h"
 #include "RatioLayer.h"
+#include "MyCardWall.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
@@ -110,6 +111,7 @@ bool GameLayer::init()
 		UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);
 		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 		xipai();
+		//addChild(MyCardWall::create(this));
 	});
 	auto _callfunc_2 = CallFunc::create([=](){creatAction();});
 
@@ -957,13 +959,16 @@ void GameLayer::createMyCardWall()
 		}
 	}
 
+	float _width = m_CardList.at(0)->getContentSize().width;
+	int _leftSize = 21 - m_CardList.size();
+
 	if (!m_CardList.empty())
 	{
 		for (int i = 0; i < m_CardList.size();++i)
 		{
 			if (m_CardList.at(i))
 			{
-				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f, 0, Vec2(45 * i, 100)));
+				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * ( 45 /2), 95)));
 			}
 		}
 	}
