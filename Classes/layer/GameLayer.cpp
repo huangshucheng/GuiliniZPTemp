@@ -39,7 +39,9 @@ m_dipai(nullptr),
 score(nullptr),
 _hand(nullptr),
 _line(nullptr),
-_note(nullptr)
+_note(nullptr),
+_needVisible(false),
+_SumTime(0)
 {
 	auto _listener_1 = EventListenerCustom::create(PLAYER_PENG, [=](EventCustom*event){
 		doPengACard();
@@ -111,6 +113,7 @@ bool GameLayer::init()
 		UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);
 		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 		xipai();
+		_needVisible = true;
 		//addChild(MyCardWall::create(this));
 	});
 	auto _callfunc_2 = CallFunc::create([=](){creatAction();});
@@ -123,6 +126,16 @@ bool GameLayer::init()
 
 void GameLayer::update(float dt)
 {
+	if (_needVisible)
+	{
+		_SumTime += dt;
+		if (_SumTime > 0.07)
+		{
+			setVisibleOneByOne();		//一行行显示
+			_SumTime = 0;
+		}
+	}
+
 	/*
 		我(2)->下家(1)->上家(0)  逆时针
 	*/
@@ -747,7 +760,7 @@ void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
 
 		t_Player[2].delACard(_type, _value);
 
-		createMyCardWall();
+		refrishCardPos();
 	
 		PopPai[2] = t_Player[2].popCard;
 		_eventDispatcher->dispatchCustomEvent(CREATE_CARD);
@@ -969,6 +982,7 @@ void GameLayer::createMyCardWall()
 			if (m_CardList.at(i))
 			{
 				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * ( 45 /2), 95)));
+				m_CardList.at(i)->setVisible(false);
 			}
 		}
 	}
@@ -977,15 +991,34 @@ void GameLayer::createMyCardWall()
 	refrishCardPos();	//跟新位置
 }
 
+void GameLayer::setVisibleOneByOne()
+{
+	static int _index = 0;
+	if (_index < m_CardList.size())
+	{
+		if (m_CardList.at(_index))
+		{
+			m_CardList.at(_index)->setVisible(true);
+		}
+		_index++;
+	}
+	else
+	{
+		_needVisible = false;
+	}
+}
+
 void GameLayer::refrishCardPos()
 {
-	Vector<CardSprite*> _tempCardList;
-
-	for (auto &_card: m_CardList)
+	int _leftSize = 21 - m_CardList.size();
+	if (!m_CardList.empty())
 	{
-		if (_card->getState() == CardSprite::CardState::OFFTouch)
+		for (int i = 0; i < m_CardList.size(); ++i)
 		{
-			//_card->setVisible(false);
+			if (m_CardList.at(i))
+			{
+				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * (45 / 2), 95)));
+			}
 		}
 	}
 }
