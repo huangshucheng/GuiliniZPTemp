@@ -89,7 +89,8 @@ void ChooseLayer::initUI()
 void ChooseLayer::chiBtnCbk(Ref* psender)
 {
 	log("chi");
-	_eventDispatcher->dispatchCustomEvent(SHOW_CHICARDLAYER);
+	//_eventDispatcher->dispatchCustomEvent(SHOW_CHICARDLAYER);
+	_eventDispatcher->dispatchCustomEvent(SHOW_RATIOLAYER);
 	//close();
 }
 
@@ -99,6 +100,7 @@ void ChooseLayer::pengBtnCbk(Ref* psender)
 	//close();
 	_eventDispatcher->dispatchCustomEvent(PLAYER_PENG);
 
+
 	close();
 }
 
@@ -107,7 +109,7 @@ void ChooseLayer::huBtnCbk(Ref* psender)
 	log("hu");
 	auto _newCard = GetLayer::getInstance()->getgameLayer()->m_newCard;
 	GetLayer::getInstance()->getgameLayer()->t_Player[2].addCard(_newCard.m_Type, _newCard.m_Value);
-	GetLayer::getInstance()->getgameLayer()->refrishCardPos();
+	GetLayer::getInstance()->getgameLayer()->createMyCardWall();
 	_eventDispatcher->dispatchCustomEvent(SHOW_RATIOLAYER);
 	close();
 }

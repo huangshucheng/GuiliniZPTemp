@@ -2,6 +2,7 @@
 #include "utils/CommonFunction.h"
 #include "ZiPai.h"
 #include "utils/Constant.h"
+#include "utils/GetScore.h"
 
 int RatioLayer::count = 0;
 
@@ -15,7 +16,7 @@ ratioNum(0)
 
 RatioLayer::~RatioLayer()
 {
-
+	
 }
 
 RatioLayer* RatioLayer::create(GameLayer* _layer)
@@ -76,6 +77,7 @@ void RatioLayer::checkRatio()
 	//CardEx r_Card = _gameLayer->t_ZPManage.GetAPai();
 	_gameLayer->getANewCard();
 	auto _card = _gameLayer->m_newCard;
+	GetScore::getInstance()->showCardList.push_back(_card);
 	_eventDispatcher->dispatchCustomEvent(NEW_CARD);
 	//_gameLayer->m_newCard = r_Card;
 	//获得胡牌用户手里的牌墙
@@ -201,7 +203,7 @@ void RatioLayer::checkRatio()
 
 	log("ratio = %d", ratioNum);
 	log("count = %d", count);
-
+	GetScore::getInstance()->setFanXin(ratioNum);
 	if (ratioNum >= (count * 4))
 	{
 		log("****");
@@ -215,6 +217,7 @@ void RatioLayer::checkRatio()
 		{
 			CardEx c = _gameLayer->t_ZPManage.GetAPai();
 			log("sheyu:%d", num);
+			GetScore::getInstance()->showCardList.push_back(c.m_NewCard);
 			if (c.m_NewCard.m_Type == 0)
 			{
 				CardSprite* _card = CardSprite::create(0, c.m_NewCard.m_Value);
@@ -230,6 +233,9 @@ void RatioLayer::checkRatio()
 			}
 
 		}
+
+		//REPLACE_ACCOUNTS //跳转到结算
+		_eventDispatcher->dispatchCustomEvent(REPLACE_ACCOUNTS);
 	}
 
 }

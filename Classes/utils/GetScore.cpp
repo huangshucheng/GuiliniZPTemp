@@ -4,7 +4,8 @@
 GetScore* GetScore::_instance = nullptr;
 
 GetScore::GetScore():
-score(0)
+score(0),
+fanXin(0)
 {
 }
 
@@ -31,6 +32,15 @@ int GetScore:: getScore()
 void GetScore::setScore(int num)
 {
 	score = num;
+}
+
+int GetScore::getFanXin()
+{
+	return fanXin;
+}
+void GetScore::setFanXin(int num)
+{
+	fanXin = num;
 }
 
 bool GetScore::purgeInstance()
