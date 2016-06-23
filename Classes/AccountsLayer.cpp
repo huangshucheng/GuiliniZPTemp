@@ -8,17 +8,11 @@
 #include "utils/GetLayer.h"
 #include "utils/Constant.h"
 #include "utils/GetScore.h"
-#include "layer/RatioLayer.h"
-
-
-#include "utils/GetLayer.h"
 
 using namespace std;
 using namespace ui;
 
 #define WIN_DATA Win::getInstance()
-
-int AccountsLayer::count = 0;
 
 AccountsLayer::AccountsLayer()
 {
@@ -86,20 +80,11 @@ void AccountsLayer::addUI()
 	addChild(layercolor);
 
 	auto gray_sp = Sprite::create("account/ima_gray_1.png");
-	//总胡数
-	auto huShu = Sprite::create("account/zi_zhs.png");
 	if (gray_sp)
 	{
 		addChild(gray_sp);
 		gray_sp->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 0)));
-
-		if (huShu)
-		{
-			gray_sp->addChild(huShu);
-			huShu->setPosition(CommonFunction::getVisibleAchor(0.07, 0.45, Vec2(0, 0)));
-		}
 	}
-
 	//返回
 	auto backBtn = Button::create("account/btn_back.png");
 	if (backBtn)
@@ -135,7 +120,6 @@ void AccountsLayer::addUI()
 	{
 		addChild(dipai_sp);
 		dipai_sp->setPosition(CommonFunction::getVisibleAchor(0, 1, Vec2(300, -100)));
-
 	}
 
 	//头像
@@ -167,12 +151,6 @@ void AccountsLayer::addUI()
 		addChild(huangz_sp);
 		huangz_sp->setPosition(CommonFunction::getVisibleAchor(0, 0.5, Vec2(340, 40)));
 	}
-	else
-	{
-		log("no huangzhuang");
-		showDiPai(dipai_sp);
-		showWinCard(huShu, 2);
-	}
 
 }
 
@@ -180,8 +158,6 @@ void AccountsLayer::quiteCallback(Ref* sender)
 {
 	if (this->getParent())
 	{
-		GetScore::getInstance()->showCardList.clear();
-		GetScore::getInstance()->setFanXin(0);
 		GetScore::getInstance()->setScore(0);
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, WelcomeScene::createScene()));
 
@@ -192,131 +168,7 @@ void AccountsLayer::restartCallback(Ref* sender)
 {
 	if (this->getParent())
 	{
-		GetScore::getInstance()->showCardList.clear();
-		GetScore::getInstance()->setFanXin(0);
 		GetScore::getInstance()->setScore(0);
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, GameScene::createScene()));
-	}
-}
-
-//显示底牌
-void  AccountsLayer::showDiPai(Node* node)
-{
-	//获得底牌，以及番醒的牌
-	//RatioLayer* ratiolayer;
-	if (GetScore::getInstance()->showCardList.size() > 0)
-	{
-		//创建小牌
-		for (int i = 0; i < GetScore::getInstance()->showCardList.size(); i++)
-		{
-			ShowCard* card = ShowCard::create(GetScore::getInstance()->showCardList[i].m_Type, GetScore::getInstance()->showCardList[i].m_Value);
-			card->setPosition(CommonFunction::getVisibleAchor(1.7,1.2,node,Vec2(i * 30,0)));
-			node->addChild(card);
-		}	
-	}
-}
-
-//显示赢家胡牌牌型
-void AccountsLayer::showWinCard(Node* node, int player)
-{
-	//GetLayer::getInstance()->getgameLayer()->t_Player[player]
-	vector<ShowCard*> m_PengCardSprite;  //碰牌m_PengCardVec[0]
-	vector<ShowCard*> m_KaiDuoCardSprite;  //m_KaiDuoCardVec[0]
-	vector<ShowCard*> m_tmpSaoChuanCardSprite;	//m_SaoChuanCardVec[0]
-	vector<ShowCard* > m_tmpSaoCardSprite;	//m_SaoCardVec[0]
-	vector<ShowCard* > m_tmpChiCardSprite;	//m_ChiCardVec[0]
-
-	showThreeVer(node, GetLayer::getInstance()->getgameLayer()->t_Player[player].m_PengCardVec, m_PengCardSprite); 
-	showThreeVer(node, GetLayer::getInstance()->getgameLayer()->t_Player[player].m_SaoCardVec, m_tmpSaoCardSprite);
-	showThreeVer(node, GetLayer::getInstance()->getgameLayer()->t_Player[player].m_ChiCardVec, m_tmpChiCardSprite);
-	showFourVer(node, GetLayer::getInstance()->getgameLayer()->t_Player[player].m_KaiDuoCardVec, m_KaiDuoCardSprite);
-	showFourVer(node, GetLayer::getInstance()->getgameLayer()->t_Player[player].m_SaoChuanCardVec, m_tmpSaoChuanCardSprite);
-
-}
-
-void  AccountsLayer::showThreeVer(Node* node, vector<int> ver[2], vector<ShowCard*> verCard)
-{
-	if (ver[0].size() > 0)
-	{
-		for (int i = 0; i < ver[0].size(); i++)
-		{
-			auto _card = ShowCard::create(0, ver[0][i]);
-			if (_card)
-			{
-				node->addChild(_card);
-				verCard.push_back(_card);
-			}
-		}
-	}
-	if (ver[1].size() > 0)
-	{
-		for (int i = 0; i < ver[1].size(); i++)
-		{
-			auto _card = ShowCard::create(1, ver[1][i]);
-			if (_card)
-			{
-				node->addChild(_card);
-				verCard.push_back(_card);
-			}
-		}
-	}
-	showThreeCardVer(verCard,node);
-}
-
-void  AccountsLayer::showFourVer(Node* node, vector<int> ver[2], vector<ShowCard*> verCard)
-{
-	if (ver[0].size() > 0)
-	{
-		for (int i = 0; i < ver[0].size(); i++)
-		{
-			auto _card = ShowCard::create(0, ver[0][i]);
-			if (_card)
-			{
-				node->addChild(_card);
-				verCard.push_back(_card);
-			}
-		}
-	}
-	if (ver[1].size() > 0)
-	{
-		for (int i = 0; i < ver[1].size(); i++)
-		{
-			auto _card = ShowCard::create(1, ver[1][i]);
-			if (_card)
-			{
-				node->addChild(_card);
-				verCard.push_back(_card);
-			}
-		}
-	}
-	showFourCardVer(verCard,node);
-}
-
-void  AccountsLayer::showThreeCardVer(vector<ShowCard*> verCard, Node* node)
-{
-	if (verCard.size() > 0)
-	{
-		count++;
-		log("count3:%d", count);
-		for (int i = 0; i < verCard.size(); i++)
-		{
-			int _height = verCard.at(i)->getContentSize().height;
-			//Vec2((i / 3)*(_height - 8) - 120, i % 3 * (_height - 70) - 60))
-			verCard.at(i)->setPosition(CommonFunction::getVisibleAchor(1.2,0.5, node,Vec2((i / 3)*(_height - 8) + 35 * count, i % 3 * (_height - 70) +50)));
-		}
-	}
-}
-
-void  AccountsLayer::showFourCardVer(vector<ShowCard*> verCard, Node* node)
-{
-	if (verCard.size() > 0)
-	{
-		count++;
-		log("count4:%d", count);
-		for (int i = 0; i < verCard.size(); i++)
-		{
-			int _height = verCard.at(i)->getContentSize().height;
-			verCard.at(i)->setPosition(CommonFunction::getVisibleAchor(1.2, 0.5, node, Vec2((i / 4)*(_height - 8) + 35 * count, i % 4 * (_height - 70) - 30)));
-		}
 	}
 }

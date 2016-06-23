@@ -24,9 +24,6 @@ public:
 
 	void checkRatio();
 
-
-	
-
 private:
 
 	Label* ratio;
@@ -36,6 +33,4 @@ private:
 	int ratioNum;
 
 	static int count;
-
-
 };

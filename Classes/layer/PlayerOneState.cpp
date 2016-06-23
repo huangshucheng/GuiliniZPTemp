@@ -18,13 +18,14 @@ PlayerOneState::PlayerOneState()
 	UserDefault::getInstance()->setIntegerForKey(GAMESTATE, 1);
 
 	auto callfunc = CallFunc::create([this](){
-		GAMELAYER->getANewCard();
 		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_1);
-
+	});
+	auto callfunc_1 = CallFunc::create([this](){
+		GAMELAYER->getANewCard();
 		myCheck();
 	});
 	auto delayTime = DelayTime::create(1.5f);
-	auto seq = Sequence::create(delayTime,callfunc, nullptr);
+	auto seq = Sequence::create(delayTime, callfunc, delayTime->clone(), callfunc_1, nullptr);
 	GAMELAYER->runAction(seq);
 }
 
