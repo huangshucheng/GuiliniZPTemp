@@ -58,7 +58,6 @@ public:
 	void removeMyCardWall();				//移除牌墙
 	void setCardState();
 	void refrishCardPos();					//更新位置
-	void setVisibleOneByOne();
 
 	virtual void update(float dt);
 
@@ -116,7 +115,5 @@ private:
 	Label*		_note;					
 	Sprite*		_hand;
 	Label*		score;						//胡数
-	bool		_needVisible;
-	float		_SumTime;
 };
 

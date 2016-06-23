@@ -15,16 +15,13 @@ PlayerZeroState::PlayerZeroState()
 	UserDefault::getInstance()->setIntegerForKey(GAMESTATE, 0);
 
 	auto callfunc = CallFunc::create([this](){
-		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_0);
-	});
-
-	auto callfunc_1 = CallFunc::create([this](){
 		GAMELAYER->getANewCard();
+		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_0);
+
 		myCheck();
 	});
-
 	auto delayTime = DelayTime::create(1.5f);
-	auto seq = Sequence::create(delayTime, callfunc, delayTime->clone(), callfunc_1, nullptr);
+	auto seq = Sequence::create(delayTime, callfunc, nullptr);
 	GAMELAYER->runAction(seq);
 }
 

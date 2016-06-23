@@ -28,6 +28,8 @@ using namespace cocos2d;
 #define SHOW_CHICARDLAYER	"showChiCardLayer"	//显示吃层
 #define SHOW_RATIOLAYER     "showRatioLayer"	//显示番醒
 
+#define REPLACE_ACCOUNTS    "replaceAccounts"	//跳转到结算
+
 //层zorder
 
 #define CARD_ZORDER_1 10

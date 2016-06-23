@@ -185,7 +185,7 @@ void ChiCardLayer::onTouchEnded(Touch *touch, Event *unused_event)
 					}
 				}
 			}
-			_gameLayer->refrishCardPos();
+			_gameLayer->createMyCardWall();
 			_eventDispatcher->dispatchCustomEvent(SHOW_CHICARD);
 
 			if (getParent())
@@ -241,7 +241,7 @@ void ChiCardLayer::onTouchEnded(Touch *touch, Event *unused_event)
 					}
 				}
 			}
-			_gameLayer->refrishCardPos();
+			_gameLayer->createMyCardWall();
 			_eventDispatcher->dispatchCustomEvent(SHOW_CHICARD);
 			
 			if (getParent())
