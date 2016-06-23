@@ -135,12 +135,6 @@ void GameLayer::update(float dt)
 			setVisibleOneByOne();		//一行行显示
 			_SumTime = 0;
 		}
-		log("_needVisible==true");
-	}
-	else
-	{
-		log("_needVisible==false");
-
 	}
 
 	/*
@@ -990,7 +984,6 @@ void GameLayer::createMyCardWall()
 			{
 				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * ( 45 /2), 95)));
 				m_CardList.at(i)->setVisible(false);
-				//m_CardList.at(i)->setOpacity(0);
 			}
 		}
 	}
@@ -1006,8 +999,6 @@ void GameLayer::setVisibleOneByOne()
 		if (m_CardList.at(_index))
 		{
 			m_CardList.at(_index)->setVisible(true);
-			
-			//m_CardList.at(_index)->runAction(FadeIn::create(0.5f));
 		}
 		_index++;
 	}
