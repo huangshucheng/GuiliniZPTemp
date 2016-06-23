@@ -75,7 +75,7 @@ void WelcomeScene::initUI()
 		//rotateMenu->addMenuItem(item_3);
 
 		addChild(rotateMenu);
-		rotateMenu->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(-150, 20)));
+		rotateMenu->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 50)));
 
 		item_0->setCallback(CC_CALLBACK_1(WelcomeScene::startGameCBK, this));
 		item_1->setCallback(CC_CALLBACK_1(WelcomeScene::startGameCBK, this));
@@ -94,10 +94,10 @@ void WelcomeScene::initUI()
 	if (shop_btn && mission_btn && bag_btn && setting_btn)
 	{
 		auto _node = Node::create();
-		_node->setContentSize(Size(477, 82));
+		_node->setContentSize(Size(400, 60));
 		addChild(_node);
 
-		_node->setPosition(CommonFunction::getVisibleAchor(1, 1, Vec2(-477 / 2, -82 / 2)));
+		_node->setPosition(CommonFunction::getVisibleAchor(1, 1, Vec2(-_node->getContentSize().width / 2, -_node->getContentSize().height / 2)));
 
 
 		_node->addChild(shop_btn);
@@ -153,6 +153,16 @@ void WelcomeScene::initUI()
 
 		m_goldLabel->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, gold_bg, Vec2(0, 0)));
 		m_diamLabel->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, diam_bg, Vec2(0, 0)));
+	}
+
+	auto start_btn = Button::create("hall/quick_start.png");
+	if (start_btn)
+	{
+		addChild(start_btn);
+		start_btn->setPosition(CommonFunction::getVisibleAchor(Anchor::MidButtom,Vec2(0,start_btn->getContentSize().height / 2)));
+		start_btn->addClickEventListener([](Ref*){
+			Director::getInstance()->replaceScene(TransitionFade::create(0.5, GameScene::createScene()));
+		});
 	}
 }
 

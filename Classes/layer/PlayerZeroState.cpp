@@ -4,6 +4,8 @@
 #include "ChooseLayer.h"
 #include "PlayerTwoState.h"
 #include "GameLayer.h"
+#include "utils/CommonFunction.h"
+#include "layerUtils/ToastLayer/ToastManger.h"
 
 USING_NS_CC;
 
@@ -13,7 +15,6 @@ PlayerZeroState::PlayerZeroState()
 {
 	std::cout << "上家[0]摸牌打牌" << std::endl;
 	UserDefault::getInstance()->setIntegerForKey(GAMESTATE, 0);
-
 	auto callfunc = CallFunc::create([this](){
 		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_0);
 	});
@@ -81,5 +82,54 @@ void PlayerZeroState::myCheck()
 	else
 	{
 		GAMELAYER->changeState(new PlayerTwoState());
+	}
+}
+
+void PlayerZeroState::zeroCheck()
+{
+	/*
+	if (GAMELAYER->t_Player[1].checkChongDuo_kaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
+	{
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家重舵"));
+		GAMELAYER->t_Player[1].doChongDuo_kaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
+	}
+	else if (GAMELAYER->t_Player[1].checkKaiduoACard(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
+	{
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家开舵"));
+		GAMELAYER->t_Player[1].doKaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
+	}
+	else if (GAMELAYER->t_Player[1].checkKaiDuo_peng(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
+	{
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家开舵"));
+		GAMELAYER->t_Player[1].doPeng_kaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
+	}
+	*/
+	if (GAMELAYER->t_Player[0].checkKaiduoACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	{
+		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家开舵"));
+		GAMELAYER->t_Player[0].doKaiDuo(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
+	}
+	else if (GAMELAYER->t_Player[0].checkKaiDuo_peng(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	{
+		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家开舵"));
+		GAMELAYER->t_Player[0].doPeng_kaiDuo(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
+	}
+	else if (GAMELAYER->t_Player[0].checkPengACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	{
+		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家碰"));
+		GAMELAYER->t_Player[0].doPengACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
+		GetLayer::getInstance()->getOneLayer()->showPengCard();
+	}
+	else if (GAMELAYER->t_Player[0].checkChiACard2_7_10(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	{
+		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家吃牌"));
+		GAMELAYER->t_Player[0].doChi2_7_10(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value, 0);
+		GetLayer::getInstance()->getOneLayer()->showChiCard();
+	}
+	else if (GAMELAYER->t_Player[0].checkChiA_B_C(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	{
+		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家吃牌"));
+		GAMELAYER->t_Player[0].doChiA_B_C(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value, 0);
+		GetLayer::getInstance()->getOneLayer()->showChiCard();
 	}
 }

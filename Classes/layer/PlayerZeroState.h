@@ -11,4 +11,5 @@ public:
 
 	virtual void Update();
 	void myCheck();
+	void zeroCheck();
 };

@@ -17,9 +17,11 @@
 #include "../AccountsLayer.h"
 #include "utils/GetScore.h"
 #include "ShowOneLayer.h"
+#include "ShowZeroLayer.h"
 #include "utils/GetLayer.h"
 #include "RatioLayer.h"
 #include "MyCardWall.h"
+#include "Effect/CardEffect.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
@@ -41,7 +43,8 @@ _hand(nullptr),
 _line(nullptr),
 _note(nullptr),
 _needVisible(false),
-_SumTime(0)
+_SumTime(0),
+_cardCount(0)
 {
 	auto _listener_1 = EventListenerCustom::create(PLAYER_PENG, [=](EventCustom*event){
 		doPengACard();
@@ -64,11 +67,17 @@ _SumTime(0)
 		addChild(ratiolayer);
 	});
 
+	//REPLACE_ACCOUNTS //跳转到结算
+	auto _listener_6 = EventListenerCustom::create(REPLACE_ACCOUNTS, [=](EventCustom*event){
+		Director::getInstance()->replaceScene(TransitionFade::create(3, AccountsLayer::createScene()));
+	});
+
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_1, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_2, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_3, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_4, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_5, 1);
+	_eventDispatcher->addEventListenerWithFixedPriority(_listener_6, 1);
 }
 
 GameLayer::~GameLayer()
@@ -78,6 +87,8 @@ GameLayer::~GameLayer()
 	_eventDispatcher->removeCustomEventListeners(SHOW_CHICARDLAYER);
 	_eventDispatcher->removeCustomEventListeners(PLAYER_CHI);
 	_eventDispatcher->removeCustomEventListeners(SHOW_RATIOLAYER);
+	_eventDispatcher->removeCustomEventListeners(REPLACE_ACCOUNTS);
+
 }
 
 bool GameLayer::init()
@@ -93,9 +104,15 @@ bool GameLayer::init()
 
 	addChild(ShowLayer::create(this));		//自己显示操作的牌
 
+	//下家显示
 	auto _oneLayer = ShowOneLayer::create(this);
-	addChild(_oneLayer);	//下家显示
+	addChild(_oneLayer);	
 	GetLayer::getInstance()->setOneLayer(_oneLayer);
+
+	//上家显示
+	auto _zeroLayer = ShowZeroLayer::create(this);
+	addChild(_zeroLayer);
+	GetLayer::getInstance()->setZeroLayer(_zeroLayer);
 
 	UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);	//是否第一次打牌
 	UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, true);	//只摸牌不打牌
@@ -106,7 +123,7 @@ bool GameLayer::init()
 	changeState(new PlayerTwoState());
 
 	auto _delay_1 = DelayTime::create(1.0f);
-	auto _delay_2 = DelayTime::create(0.5f);
+	auto _delay_2 = DelayTime::create(2.5f);
 
 	auto _callfunc_1 = CallFunc::create([=](){
 	
@@ -114,7 +131,7 @@ bool GameLayer::init()
 		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 		xipai();
 		_needVisible = true;
-		log("visible=%d", _needVisible?true:false);
+		//log("visible=%d", _needVisible?true:false);
 		//addChild(MyCardWall::create(this));
 	});
 	auto _callfunc_2 = CallFunc::create([=](){creatAction();});
@@ -122,6 +139,7 @@ bool GameLayer::init()
 	auto _seq = Sequence::create(_delay_1, _callfunc_1, _delay_2, _callfunc_2, nullptr);
 	runAction(_seq);
 
+	addChild(CardEffect::create());
 	return true;
 }
 
@@ -763,7 +781,7 @@ void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
 
 		refrishCardPos();
 	
-		PopPai[2] = t_Player[2].popCard;
+		PopPai = t_Player[2].popCard;
 		_eventDispatcher->dispatchCustomEvent(CREATE_CARD);
 
 		UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY,true);
@@ -983,7 +1001,8 @@ void GameLayer::createMyCardWall()
 			if (m_CardList.at(i))
 			{
 				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * ( 45 /2), 95)));
-				m_CardList.at(i)->setVisible(false);
+				//m_CardList.at(i)->setVisible(false);
+				m_CardList.at(i)->setCardOpacity(0);
 			}
 		}
 	}
@@ -993,19 +1012,21 @@ void GameLayer::createMyCardWall()
 
 void GameLayer::setVisibleOneByOne()
 {
-	static int _index = 0;
-	if (_index < m_CardList.size())
+	 if (_cardCount < m_CardList.size())
 	{
-		if (m_CardList.at(_index))
+		 if (m_CardList.at(_cardCount))
 		{
-			m_CardList.at(_index)->setVisible(true);
+			 for (auto &_child : m_CardList.at(_cardCount)->getChildren())
+			 {
+				 _child->runAction(FadeIn::create(0.2));
+			 }
 		}
-		_index++;
+		 _cardCount++;
 	}
 	else
 	{
 		_needVisible = false;
-		_index = 0;
+		_cardCount = 0;
 	}
 }
 
@@ -1055,6 +1076,7 @@ void GameLayer::refrishCardPos()
 			}
 		}
 	}
+	setCardState();
 }
 
 void GameLayer::removeMyCardWall()
