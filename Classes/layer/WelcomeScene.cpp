@@ -61,10 +61,10 @@ void WelcomeScene::initUI()
 		bg_sp->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 0)));
 	}
 	//中间
-	auto item_0 = MenuItemSprite::create(Sprite::create("hall/ima_bisai.png"), Sprite::create("hall/ima_bisai.png"));
-	auto item_1 = MenuItemSprite::create(Sprite::create("hall/ima_ct.png"),Sprite::create("hall/ima_ct.png"));
-	auto item_2 = MenuItemSprite::create(Sprite::create("hall/ima_ziyou.png"), Sprite::create("hall/ima_ziyou.png"));
-	//auto item_3 = MenuItemSprite::create(Sprite::create("hall/ima_ziyou.png"), Sprite::create("hall/ima_ziyou.png"));
+	/*
+	auto item_0 = MenuItemSprite::create(Sprite::create("hall/ima_room_1.png"), Sprite::create("hall/ima_room_1.png"));
+	auto item_1 = MenuItemSprite::create(Sprite::create("hall/ima_room_2.png"),Sprite::create("hall/ima_room_2.png"));
+	auto item_2 = MenuItemSprite::create(Sprite::create("hall/ima_room_3.png"), Sprite::create("hall/ima_room_3.png"));
 
 	if (item_0 && item_1 && item_2)
 	{
@@ -72,7 +72,6 @@ void WelcomeScene::initUI()
 		rotateMenu->addMenuItem(item_0);
 		rotateMenu->addMenuItem(item_1);
 		rotateMenu->addMenuItem(item_2);
-		//rotateMenu->addMenuItem(item_3);
 
 		addChild(rotateMenu);
 		rotateMenu->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 50)));
@@ -84,8 +83,37 @@ void WelcomeScene::initUI()
 		item_0->setTag(0);
 		item_1->setTag(1);
 		item_2->setTag(2);
+	}*/
+
+	m_scrollView = ui::ScrollView::create();
+	m_scrollView->setDirection(ui::ScrollView::Direction::HORIZONTAL);
+	m_scrollView->setAnchorPoint(Vec2(0.5, 0.5));
+	m_scrollView->setContentSize(Size(1136, 480));
+	m_scrollView->setInertiaScrollEnabled(true);
+	m_scrollView->setBounceEnabled(true);
+	m_scrollView->setInnerContainerSize(Size(350*3, 450));
+
+	m_scrollView->setPosition(CommonFunction::getVisibleAchor(Center, Vec2::ZERO));
+	//m_scrollView->setBackGroundColor(Color3B::RED);
+	//m_scrollView->setBackGroundColorOpacity(150);
+	//m_scrollView->setBackGroundColorType(Layout::BackGroundColorType::SOLID);
+	this->addChild(m_scrollView);
+	m_scrollView->setPosition(CommonFunction::getVisibleAchor(Anchor::Center,Vec2::ZERO));
+	m_scrollView->setScrollBarEnabled(false);
+
+	for (int i = 0; i < 3;i++)
+	{
+		Button* _btn = Button::create(StringUtils::format("hall/ima_room_%d.png", i + 1));
+		if (_btn)
+		{
+			m_scrollView->addChild(_btn);
+			float _width = _btn->getContentSize().width;
+			_btn->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, m_scrollView, Vec2(i * 350 - 370, 0)));
+			_btn->addClickEventListener(CC_CALLBACK_1(WelcomeScene::startGameCBK,this));
+		}
 	}
 
+	//右上角
 	auto shop_btn =		Button::create("hall/lab_shop.png");
 	auto mission_btn =	Button::create("hall/lab_mission.png");
 	auto bag_btn=		Button::create("hall/lab_bag.png");
@@ -117,7 +145,7 @@ void WelcomeScene::initUI()
 	{
 		addChild(hero_icon);
 		float _height = hero_icon->getContentSize().height;
-		hero_icon->setPosition(CommonFunction::getVisibleAchor(0, 1, Vec2(_height, -_height)));
+		hero_icon->setPosition(CommonFunction::getVisibleAchor(0, 1, Vec2(_height , -_height / 2)));
 	}
 
 	auto gold_sp = Sprite::create("hall/blab_conit.png");
@@ -128,8 +156,8 @@ void WelcomeScene::initUI()
 		hero_icon->addChild(gold_sp);
 		hero_icon->addChild(diam_sp);
 
-		gold_sp->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(75, 25)));
-		diam_sp->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(75, -25)));
+		gold_sp->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(75, 20)));
+		diam_sp->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(75, -20)));
 	}
 
 	auto gold_bg = Sprite::create("hall/square.png");
@@ -140,8 +168,8 @@ void WelcomeScene::initUI()
 		hero_icon->addChild(gold_bg);
 		hero_icon->addChild(diam_bg);
 
-		gold_bg->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(200, 25)));
-		diam_bg->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(200, -25)));
+		gold_bg->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(200, 20)));
+		diam_bg->setPosition(CommonFunction::getVisibleAchor(0.5, 0.5, hero_icon, Vec2(200, -20)));
 	}
 
 	m_goldLabel = Label::createWithTTF("2000","fonts/Roboto-Medium.ttf",32);
