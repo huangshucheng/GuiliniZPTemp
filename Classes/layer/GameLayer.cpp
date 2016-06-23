@@ -19,6 +19,7 @@
 #include "ShowOneLayer.h"
 #include "utils/GetLayer.h"
 #include "RatioLayer.h"
+#include "MyCardWall.h"
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
 
@@ -38,7 +39,9 @@ m_dipai(nullptr),
 score(nullptr),
 _hand(nullptr),
 _line(nullptr),
-_note(nullptr)
+_note(nullptr),
+_needVisible(false),
+_SumTime(0)
 {
 	auto _listener_1 = EventListenerCustom::create(PLAYER_PENG, [=](EventCustom*event){
 		doPengACard();
@@ -60,17 +63,12 @@ _note(nullptr)
 		RatioLayer* ratiolayer = RatioLayer::create(this);
 		addChild(ratiolayer);
 	});
-	//REPLACE_ACCOUNTS //跳转到结算
-	auto _listener_6 = EventListenerCustom::create(REPLACE_ACCOUNTS, [=](EventCustom*event){
-		Director::getInstance()->replaceScene(TransitionFade::create(3, AccountsLayer::createScene()));
-	});
 
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_1, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_2, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_3, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_4, 1);
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_5, 1);
-	_eventDispatcher->addEventListenerWithFixedPriority(_listener_6, 1);
 }
 
 GameLayer::~GameLayer()
@@ -80,7 +78,6 @@ GameLayer::~GameLayer()
 	_eventDispatcher->removeCustomEventListeners(SHOW_CHICARDLAYER);
 	_eventDispatcher->removeCustomEventListeners(PLAYER_CHI);
 	_eventDispatcher->removeCustomEventListeners(SHOW_RATIOLAYER);
-	_eventDispatcher->removeCustomEventListeners(REPLACE_ACCOUNTS);
 }
 
 bool GameLayer::init()
@@ -116,6 +113,9 @@ bool GameLayer::init()
 		UserDefault::getInstance()->setBoolForKey(ISFIRSTPLAY, false);
 		_eventDispatcher->dispatchCustomEvent(PLAYERBLINK_2);
 		xipai();
+		_needVisible = true;
+		log("visible=%d", _needVisible?true:false);
+		//addChild(MyCardWall::create(this));
 	});
 	auto _callfunc_2 = CallFunc::create([=](){creatAction();});
 
@@ -127,6 +127,22 @@ bool GameLayer::init()
 
 void GameLayer::update(float dt)
 {
+	if (_needVisible)
+	{
+		_SumTime += dt;
+		if (_SumTime > 0.07)
+		{
+			setVisibleOneByOne();		//一行行显示
+			_SumTime = 0;
+		}
+		log("_needVisible==true");
+	}
+	else
+	{
+		log("_needVisible==false");
+
+	}
+
 	/*
 		我(2)->下家(1)->上家(0)  逆时针
 	*/
@@ -299,7 +315,7 @@ bool GameLayer::checkHu()
 {
 	if (t_Player[2].checkHuPai(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		createMyCardWall();
+		refrishCardPos();
 		return true;
 	}
 	return false;
@@ -324,7 +340,7 @@ void GameLayer::doPengACard()
 	UserDefault::getInstance()->setBoolForKey(ISPLAYCAED, true);	//可以打牌
 	changeState(new PlayerTwoState());								//碰完后我打牌
 
-	createMyCardWall();		//重新显示牌面
+	refrishCardPos();		//重新显示牌面
 	_eventDispatcher->dispatchCustomEvent(SHOW_PENGCARD);	//显示层显示碰的牌
 
 	//测试
@@ -436,7 +452,7 @@ bool GameLayer::checkSaochuan()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌扫穿！！！"));
 		t_Player[2].doSaoChuanACard(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);
 		isAction = true;
 
@@ -450,7 +466,7 @@ bool GameLayer::checkSaochuan()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫的扫穿！！！"));
 		t_Player[2].doSao_SaoChuan(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);
 		isAction = true;
 
@@ -485,7 +501,7 @@ bool GameLayer::checkSao()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫！！！"));
 		t_Player[2].doSaoACard(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCARD);
 
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//扫完后我打牌
@@ -541,7 +557,7 @@ bool GameLayer::checkKaiduo()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌开舵！！！"));
 		t_Player[2].doKaiDuo(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
 		isAction = true;
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//开舵后我打牌
@@ -553,7 +569,7 @@ bool GameLayer::checkKaiduo()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫的开舵！！！"));
 		t_Player[2].doSao_KaiDuo(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
 		isAction = true;
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//开舵后我打牌
@@ -565,7 +581,7 @@ bool GameLayer::checkKaiduo()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"碰的开舵！！！"));
 		t_Player[2].doPeng_kaiDuo(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
 		isAction = true;
 		UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//开舵后我打牌
@@ -600,7 +616,7 @@ bool GameLayer::checkChongDuo()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"!!开舵的重舵！！！"));
 		t_Player[2].doChongDuo_kaiDuo(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
 
 		isAction = true;
@@ -622,7 +638,7 @@ bool GameLayer::checkChongDuo()
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫穿的重舵！！！"));
 		t_Player[2].doChongDuo_saoChuan(m_newCard.m_Type, m_newCard.m_Value);
-		createMyCardWall();
+		refrishCardPos();
 
 		isAction = true;
 		changeState(new PlayerOneState());
@@ -751,7 +767,7 @@ void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
 
 		t_Player[2].delACard(_type, _value);
 
-		createMyCardWall();
+		refrishCardPos();
 	
 		PopPai[2] = t_Player[2].popCard;
 		_eventDispatcher->dispatchCustomEvent(CREATE_CARD);
@@ -963,30 +979,89 @@ void GameLayer::createMyCardWall()
 		}
 	}
 
+	float _width = m_CardList.at(0)->getContentSize().width;
+	int _leftSize = 21 - m_CardList.size();
+
 	if (!m_CardList.empty())
 	{
 		for (int i = 0; i < m_CardList.size();++i)
 		{
 			if (m_CardList.at(i))
 			{
-				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(0.13f, 0, Vec2(45 * i, 100)));
+				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * ( 45 /2), 95)));
+				m_CardList.at(i)->setVisible(false);
+				//m_CardList.at(i)->setOpacity(0);
 			}
 		}
 	}
 
 	setCardState();
-	refrishCardPos();	//跟新位置
+}
+
+void GameLayer::setVisibleOneByOne()
+{
+	static int _index = 0;
+	if (_index < m_CardList.size())
+	{
+		if (m_CardList.at(_index))
+		{
+			m_CardList.at(_index)->setVisible(true);
+			
+			//m_CardList.at(_index)->runAction(FadeIn::create(0.5f));
+		}
+		_index++;
+	}
+	else
+	{
+		_needVisible = false;
+		_index = 0;
+	}
 }
 
 void GameLayer::refrishCardPos()
 {
-	Vector<CardSprite*> _tempCardList;
+	removeMyCardWall();
 
-	for (auto &_card: m_CardList)
+	float x = 200;
+	float y = 110;
+	int count = 0;
+
+	if (t_Player[2].m_MyCard[0].size() > 0)
 	{
-		if (_card->getState() == CardSprite::CardState::OFFTouch)
+		for (int i = 0; i < t_Player[2].m_MyCard[0].size(); i++)
 		{
-			//_card->setVisible(false);
+			CardSprite* _card = CardSprite::create(0, t_Player[2].m_MyCard[0][i]);
+			addChild(_card);
+			if (_card)
+			{
+				m_CardList.pushBack(_card);
+			}
+		}
+	}
+	if (t_Player[2].m_MyCard[1].size() > 0)
+	{
+		for (int i = 0; i < t_Player[2].m_MyCard[1].size(); i++)
+		{
+			CardSprite* _card = CardSprite::create(1, t_Player[2].m_MyCard[1][i]);
+			addChild(_card);
+			if (_card)
+			{
+				m_CardList.pushBack(_card);
+			}
+		}
+	}
+
+	float _width = m_CardList.at(0)->getContentSize().width;
+	int _leftSize = 21 - m_CardList.size();
+
+	if (!m_CardList.empty())
+	{
+		for (int i = 0; i < m_CardList.size(); ++i)
+		{
+			if (m_CardList.at(i))
+			{
+				m_CardList.at(i)->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftButtom, 0, Vec2(45 * i + 180 + _leftSize * (45 / 2), 95)));
+			}
 		}
 	}
 }
