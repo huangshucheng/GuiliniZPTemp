@@ -89,7 +89,8 @@ void ChooseLayer::initUI()
 void ChooseLayer::chiBtnCbk(Ref* psender)
 {
 	log("chi");
-	_eventDispatcher->dispatchCustomEvent(SHOW_CHICARDLAYER);
+	//_eventDispatcher->dispatchCustomEvent(SHOW_CHICARDLAYER);
+	_eventDispatcher->dispatchCustomEvent(SHOW_RATIOLAYER);
 	//close();
 }
 
@@ -98,6 +99,7 @@ void ChooseLayer::pengBtnCbk(Ref* psender)
 	log("peng");
 	//close();
 	_eventDispatcher->dispatchCustomEvent(PLAYER_PENG);
+
 
 	close();
 }
