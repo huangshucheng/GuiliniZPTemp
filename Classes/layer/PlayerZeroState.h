@@ -10,6 +10,6 @@ public:
 	~PlayerZeroState();
 
 	virtual void Update();
-	void myCheck();
-	void zeroCheck();
+	bool myCheck();
+	bool zeroCheck();
 };

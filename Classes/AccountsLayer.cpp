@@ -159,10 +159,10 @@ void AccountsLayer::addUI()
 		addChild(huangz_sp);
 		huangz_sp->setPosition(CommonFunction::getVisibleAchor(0, 0.5, Vec2(340, 40)));
 		//test
-		showDiPai(dipai_sp);
-		showWinCard(2);
-		AddLabel();
-		addWinUI();
+		//showDiPai(dipai_sp);
+		//showWinCard(2);
+		//AddLabel();
+		//addWinUI();
 
 	}
 	else

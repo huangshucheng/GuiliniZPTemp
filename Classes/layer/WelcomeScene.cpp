@@ -61,9 +61,9 @@ void WelcomeScene::initUI()
 		bg_sp->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 0)));
 	}
 	//中间
-	/*
-	auto item_0 = MenuItemSprite::create(Sprite::create("hall/ima_room_1.png"), Sprite::create("hall/ima_room_1.png"));
-	auto item_1 = MenuItemSprite::create(Sprite::create("hall/ima_room_2.png"),Sprite::create("hall/ima_room_2.png"));
+	
+	auto item_0 = MenuItemSprite::create(Sprite::create("hall/ima_room_2.png"), Sprite::create("hall/ima_room_2.png"));
+	auto item_1 = MenuItemSprite::create(Sprite::create("hall/ima_room_1.png"),Sprite::create("hall/ima_room_1.png"));
 	auto item_2 = MenuItemSprite::create(Sprite::create("hall/ima_room_3.png"), Sprite::create("hall/ima_room_3.png"));
 
 	if (item_0 && item_1 && item_2)
@@ -83,8 +83,8 @@ void WelcomeScene::initUI()
 		item_0->setTag(0);
 		item_1->setTag(1);
 		item_2->setTag(2);
-	}*/
-
+	}
+	/*
 	m_scrollView = ui::ScrollView::create();
 	m_scrollView->setDirection(ui::ScrollView::Direction::HORIZONTAL);
 	m_scrollView->setAnchorPoint(Vec2(0.5, 0.5));
@@ -112,7 +112,7 @@ void WelcomeScene::initUI()
 			_btn->addClickEventListener(CC_CALLBACK_1(WelcomeScene::startGameCBK,this));
 		}
 	}
-
+	*/
 	//右上角
 	auto shop_btn =		Button::create("hall/lab_shop.png");
 	auto mission_btn =	Button::create("hall/lab_mission.png");

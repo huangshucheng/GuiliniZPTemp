@@ -15,13 +15,47 @@ PlayerZeroState::PlayerZeroState()
 {
 	std::cout << "上家[0]摸牌打牌" << std::endl;
 	UserDefault::getInstance()->setIntegerForKey(GAMESTATE, 0);
+
 	auto callfunc = CallFunc::create([this](){
 		Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(PLAYERBLINK_0);
 	});
 
 	auto callfunc_1 = CallFunc::create([this](){
 		GAMELAYER->getANewCard();
-		myCheck();
+
+		if (myCheck())
+		{
+			std::cout << "我有操作" << std::endl;
+		}
+		else if (zeroCheck())
+		{
+			GAMELAYER->t_Player[0].delACard(0);
+			GAMELAYER->PopPai = GAMELAYER->t_Player[0].popCard;
+
+			//打一张牌，显示出来
+
+			auto _callf_1 = CallFunc::create([](){
+				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(CREATE_CARD);
+				ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家打一张牌"));
+
+			});
+
+			auto _callf_2 = CallFunc::create([](){
+				GAMELAYER->changeState(new PlayerTwoState());
+			});
+			auto delay = DelayTime::create(1.5f);
+			GAMELAYER->runAction(Sequence::create(delay, _callf_1, _callf_2, nullptr));
+		}
+		else
+		{
+			auto delay = DelayTime::create(1.5f);
+			auto _callf = CallFunc::create([](){
+				GAMELAYER->changeState(new PlayerTwoState());
+			});
+			GAMELAYER->runAction(Sequence::create(delay, _callf, nullptr));
+
+		}
+
 	});
 
 	auto delayTime = DelayTime::create(1.5f);
@@ -39,7 +73,7 @@ void PlayerZeroState::Update()
 	//cocos2d::log("zero Update");
 }
 
-void PlayerZeroState::myCheck()
+bool PlayerZeroState::myCheck()
 {
 	if (GAMELAYER->checkHu())
 	{
@@ -49,14 +83,17 @@ void PlayerZeroState::myCheck()
 		GAMELAYER->addChild(chooseLayer);
 		chooseLayer->setBtnEnable(3);
 		chooseLayer->setName(CHOOSELAYER);
+		return true;
 	}
 	else if (GAMELAYER->checkChongDuo())
 	{
 		std::cout << "重舵" << std::endl;
+		return true;
 	}
 	else if (GAMELAYER->checkKaiduo())
 	{
 		std::cout << "开舵" << std::endl;
+		return true;
 	}
 	else if (GAMELAYER->checkChi() && GAMELAYER->checkPeng())//可吃可碰
 	{
@@ -64,6 +101,7 @@ void PlayerZeroState::myCheck()
 		GAMELAYER->addChild(chooseLayer);
 		chooseLayer->setBtnEnable(4);
 		chooseLayer->setName(CHOOSELAYER);
+		return true;
 	}
 	else if (GAMELAYER->checkChi() && !GAMELAYER->checkPeng())	//可吃不能碰
 	{
@@ -71,6 +109,7 @@ void PlayerZeroState::myCheck()
 		GAMELAYER->addChild(chooseLayer);
 		chooseLayer->setBtnEnable(1);
 		chooseLayer->setName(CHOOSELAYER);
+		return true;
 	}
 	else if (!GAMELAYER->checkChi() && GAMELAYER->checkPeng())//可吃不能碰
 	{
@@ -78,58 +117,45 @@ void PlayerZeroState::myCheck()
 		GAMELAYER->addChild(chooseLayer);
 		chooseLayer->setBtnEnable(2);
 		chooseLayer->setName(CHOOSELAYER);
+		return true;
 	}
-	else
-	{
-		GAMELAYER->changeState(new PlayerTwoState());
-	}
+	return false;
 }
 
-void PlayerZeroState::zeroCheck()
+bool PlayerZeroState::zeroCheck()
 {
-	/*
-	if (GAMELAYER->t_Player[1].checkChongDuo_kaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
-	{
-		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家重舵"));
-		GAMELAYER->t_Player[1].doChongDuo_kaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
-	}
-	else if (GAMELAYER->t_Player[1].checkKaiduoACard(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
-	{
-		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家开舵"));
-		GAMELAYER->t_Player[1].doKaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
-	}
-	else if (GAMELAYER->t_Player[1].checkKaiDuo_peng(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value))
-	{
-		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"下家开舵"));
-		GAMELAYER->t_Player[1].doPeng_kaiDuo(GAMELAYER->PopPai[2].m_Type, GAMELAYER->PopPai[2].m_Value);
-	}
-	*/
-	if (GAMELAYER->t_Player[0].checkKaiduoACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
-	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家开舵"));
-		GAMELAYER->t_Player[0].doKaiDuo(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
-	}
-	else if (GAMELAYER->t_Player[0].checkKaiDuo_peng(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
-	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家开舵"));
-		GAMELAYER->t_Player[0].doPeng_kaiDuo(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
-	}
-	else if (GAMELAYER->t_Player[0].checkPengACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	//if (GAMELAYER->t_Player[0].checkKaiduoACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	//{
+	//	//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家开舵"));
+	//	//GAMELAYER->t_Player[0].doKaiDuo(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
+
+	//}
+	//else if (GAMELAYER->t_Player[0].checkKaiDuo_peng(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
+	//{
+	//	//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家开舵"));
+	//	//GAMELAYER->t_Player[0].doPeng_kaiDuo(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
+	//}
+	
+	if (GAMELAYER->t_Player[0].checkPengACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家碰"));
 		GAMELAYER->t_Player[0].doPengACard(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value);
 		GetLayer::getInstance()->getOneLayer()->showPengCard();
+		return true;
 	}
 	else if (GAMELAYER->t_Player[0].checkChiACard2_7_10(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家吃牌"));
 		GAMELAYER->t_Player[0].doChi2_7_10(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value, 0);
 		GetLayer::getInstance()->getOneLayer()->showChiCard();
+		return true;
 	}
 	else if (GAMELAYER->t_Player[0].checkChiA_B_C(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value))
 	{
 		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"上家吃牌"));
 		GAMELAYER->t_Player[0].doChiA_B_C(GAMELAYER->m_newCard.m_Type, GAMELAYER->m_newCard.m_Value, 0);
 		GetLayer::getInstance()->getOneLayer()->showChiCard();
+		return true;
 	}
+	return false;
 }

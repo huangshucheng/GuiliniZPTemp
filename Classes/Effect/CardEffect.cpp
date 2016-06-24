@@ -18,6 +18,8 @@ bool CardEffect::init()
 	_SumTime_3 = 0;
 
 	_isActoin_1 = false;
+
+
 	_isActoin_2 = false;
 	_isActoin_3 = false;
 
@@ -25,7 +27,7 @@ bool CardEffect::init()
 
 	for (int i = 0; i < 15;i++)
 	{
-		auto _card_1 = Sprite::create("chang_d1.png");
+		auto _card_1 = Sprite::create("card_back.png");
 		if (_card_1)
 		{
 			addChild(_card_1);
@@ -35,7 +37,7 @@ bool CardEffect::init()
 			_card_1->setOpacity(0);
 		}
 
-		auto _card_2 = Sprite::create("chang_d2.png");
+		auto _card_2 = Sprite::create("card_back.png");
 		if (_card_2)
 		{
 			addChild(_card_2);
@@ -46,7 +48,7 @@ bool CardEffect::init()
 			_card_2->setOpacity(0);
 		}
 
-		auto _card_3 = Sprite::create("chang_d3.png");
+		auto _card_3 = Sprite::create("card_back.png");
 		if (_card_3)
 		{
 			addChild(_card_3);

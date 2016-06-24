@@ -40,7 +40,6 @@ _beilv(1000),
 m_dipai(nullptr),
 score(nullptr),
 _hand(nullptr),
-_line(nullptr),
 _note(nullptr),
 _needVisible(false),
 _SumTime(0),
@@ -720,12 +719,12 @@ bool GameLayer::onTouchBegan(Touch *touch, Event *unused_event)
 			if (_card->getState() == CardSprite::CardState::ONTouch)
 			{
 				//画线
-				m_line = DrawNode::create();
+				/*m_line = DrawNode::create();
 				addChild(m_line);
 				if (m_line)
 				{
-					m_line->drawSegment(Point(0, VISIBLESIZE.height / 2 - 50), Point(VISIBLESIZE.width, VISIBLESIZE.height / 2 - 50), 2, Color4F(0, 1, 0, 1));
-				}
+					m_line->drawSegment(Point(0, VISIBLESIZE.height / 2 - 50), Point(VISIBLESIZE.width, VISIBLESIZE.height / 2 - 50), 2, Color4F(0.5, 0.5, 0.1, 1));
+				}*/
 				return true;
 			}
 			else
@@ -750,10 +749,10 @@ void GameLayer::onTouchMoved(Touch *touch, Event *unused_event)
 
 void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
 {
-	if (m_line)
+	/*if (m_line)
 	{
 		m_line->clear();
-	}
+	}*/
 	if (!m_TempMoveCard)
 	{
 		return;
@@ -1174,13 +1173,13 @@ void GameLayer::setCardState()
 
 void GameLayer::creatAction()
 {
-	 _line = DrawNode::create();
+	/* _line = DrawNode::create();
 	 addChild(_line);
 	 if (_line)
 	{
 		 _line->drawSegment(Point(0, VISIBLESIZE.height / 2 - 50), Point(VISIBLESIZE.width, VISIBLESIZE.height / 2 - 50), 2, Color4F(0, 1, 0, 1));
-	}
-	 _note = Label::createWithTTF(CommonFunction::WStrToUTF8(L"将牌划过线"), "fonts/Roboto-Medium.ttf", 30);
+	}*/
+	 _note = Label::createWithTTF(CommonFunction::WStrToUTF8(L"滑动出牌"), "fonts/Roboto-Medium.ttf", 30);
 	 _note->setPosition(Vec2(850, 320));
 	 addChild(_note);
 
@@ -1204,18 +1203,20 @@ void GameLayer::setActionVisible(bool _visible)
 {
 	if (_visible)
 	{
-		if (_line && _note && _hand)
+		//if (_line && _note && _hand)
+		if ( _note && _hand)
 		{
-			_line->setVisible(true);
+			//_line->setVisible(true);
 			_note->setVisible(true);
 			_hand->setVisible(true);
 		}
 	}
 	else
 	{
-		if (_line && _note && _hand)
+		//if (_line && _note && _hand)
+		if ( _note && _hand)
 		{
-			_line->setVisible(false);
+			//_line->setVisible(false);
 			_note->setVisible(false);
 			_hand->setVisible(false);
 		}

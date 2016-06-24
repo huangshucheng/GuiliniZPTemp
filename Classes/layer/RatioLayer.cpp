@@ -233,5 +233,5 @@ void RatioLayer::checkRatio()
 
 		}
 	}
-
+	_eventDispatcher->dispatchCustomEvent(REPLACE_ACCOUNTS);
 }

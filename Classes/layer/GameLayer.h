@@ -108,7 +108,7 @@ private:
 	Label*		m_beilv;					//倍率标签
 	int			_beilv;						//倍率
 	Label*		m_dipai;					//底牌
-	DrawNode*	_line;						//创建线
+	//DrawNode*	_line;						//创建线
 	Label*		_note;					
 	Sprite*		_hand;
 	Label*		score;						//胡数

@@ -150,6 +150,7 @@ Sprite* ShowLayer::createSmallCardSprite(int p_Type, int p_Value)
 
 void ShowLayer::createACard()
 {
+	int gameState = UserDefault::getInstance()->getIntegerForKey(GAMESTATE, 1);
 
 	int _type = m_GameLayer->PopPai.m_Type;
 	int _value = m_GameLayer->PopPai.m_Value;
@@ -171,12 +172,39 @@ void ShowLayer::createACard()
 	m_ACard = createBigCardSprite(_type, _value);
 	addChild(m_ACard);
 
-	auto fadeOut = FadeOut::create(3.0f);
+	auto moveTo = MoveTo::create(0.3, CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 0)));
+
+	if (gameState == 0)
+	{
+		if (m_ACard)
+		{
+			m_ACard->setPosition(CommonFunction::getVisibleAchor(Anchor::LeftTop,Vec2::ZERO));
+			m_ACard->runAction(moveTo);
+		}
+	}
+	else if (gameState == 1)
+	{
+		if (m_ACard)
+		{
+			m_ACard->setPosition(CommonFunction::getVisibleAchor(Anchor::RightTop, Vec2::ZERO));
+			m_ACard->runAction(moveTo);
+		}
+	}
+	else if (gameState == 2)
+	{
+		if (m_ACard)
+		{
+			m_ACard->setPosition(CommonFunction::getVisibleAchor(Anchor::MidButtom, Vec2::ZERO));
+			m_ACard->runAction(moveTo);
+		}
+	}
+
+	/*auto fadeOut = FadeOut::create(3.0f);
 	if (m_ACard)
 	{
 		m_ACard->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 0)));
 		m_ACard->runAction(fadeOut);
-	}
+	}*/
 }
 
 void ShowLayer::createANewCard()
