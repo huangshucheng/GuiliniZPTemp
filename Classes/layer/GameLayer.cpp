@@ -68,7 +68,11 @@ _cardCount(0)
 
 	//REPLACE_ACCOUNTS //跳转到结算
 	auto _listener_6 = EventListenerCustom::create(REPLACE_ACCOUNTS, [=](EventCustom*event){
-		Director::getInstance()->replaceScene(TransitionFade::create(3, AccountsLayer::createScene()));
+		auto delayTime = DelayTime::create(4.0f);
+		auto callfunc = CallFunc::create([](){
+			Director::getInstance()->replaceScene(TransitionFade::create(0.5, AccountsLayer::createScene()));
+		});
+		this->runAction(Sequence::create(delayTime,callfunc,nullptr));
 	});
 
 	_eventDispatcher->addEventListenerWithFixedPriority(_listener_1, 1);
