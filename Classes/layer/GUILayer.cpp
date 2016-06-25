@@ -220,7 +220,7 @@ void GUILayer::playerBlink_0()	//上家
 	if (_timecount)
 	{
 		_timecount->setPosition(icon_left->getPosition() + Vec2(100, 0));
-		_timecount->start(6, [=](){
+		_timecount->start(15, [=](){
 			if (GAMELAYER->getChildByName(CHOOSELAYER))
 			{
 				Director::getInstance()->getEventDispatcher()->dispatchCustomEvent(TIMEOUT_CLOSE);
@@ -248,7 +248,7 @@ void GUILayer::playerBlink_1()//下家
 	if (_timecount)
 	{
 		_timecount->setPosition(icon_right->getPosition() + Vec2(-100, 0));
-		_timecount->start(6, [=](){
+		_timecount->start(15, [=](){
 			
 			if (GAMELAYER->getChildByName(CHOOSELAYER))
 			{
@@ -280,7 +280,7 @@ void GUILayer::playerBlink_2()
 	{
 		_timecount->setVisible(true);
 		_timecount->setPosition(icon_leftDown->getPosition() + Vec2(0, 100));
-		_timecount->start(6, [=](){
+		_timecount->start(15, [=](){
 			
 			//若是我吃牌或碰牌，默认过
 			if (!UserDefault::getInstance()->getBoolForKey(ISFIRSTPLAY))
