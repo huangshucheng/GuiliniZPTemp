@@ -227,7 +227,6 @@ void GUILayer::playerBlink_0()	//上家
 		auto repeat = RepeatForever::create(Sequence::create(fadeout, fadein, nullptr));
 		_light->runAction(repeat);
 	}
-
 }
 
 void GUILayer::playerBlink_1()//下家
