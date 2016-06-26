@@ -362,7 +362,7 @@ void GameLayer::doPengACard()
 	//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我碰！！！"));
 
 		//特效
-	string str = "peng.png";
+	string str = "effect/peng.png";
 	addEffect(str);
 
 	UserDefault::getInstance()->setBoolForKey(ISGETORPLAY, false);	//碰完后我打牌
@@ -483,17 +483,19 @@ void GameLayer::addEffect(string str)
 	{
 		image->setPosition(CommonFunction::getVisibleAchor(Anchor::Center, Vec2(0, 0)));
 		addChild(image,2);
-
-		auto scaleTo = ScaleTo::create(0.5f, 2.0);
+		image->setScale(0.5f);
+		
+		auto scaleTo = ScaleTo::create(0.5f, 1.2f);
+		auto ease = EaseSineOut::create(scaleTo);
 		auto delayTime = DelayTime::create(0.5f);
 		auto fadeOut = FadeOut::create(0.5f);
 
-		auto spa = Spawn::create(fadeOut, scaleTo, nullptr);
+		auto spa = Spawn::create(fadeOut, ease, nullptr);
 		auto callFun = CallFunc::create([=]{
 			image->removeFromParent();
 		});
 
-		auto seq = Sequence::create(scaleTo, delayTime, spa, callFun, nullptr);
+		auto seq = Sequence::create(ease, delayTime, spa, callFun, nullptr);
 		image->runAction(seq);
 		
 	}
@@ -510,7 +512,7 @@ bool GameLayer::checkSaochuan()
 		refrishCardPos();
 
 		//特效
-		string str = "gold.png";
+		string str = "effect/saochuan.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);
@@ -529,7 +531,7 @@ bool GameLayer::checkSaochuan()
 		refrishCardPos();
 
 				//特效
-		string str = "gold.png";
+		string str = "effect/saochuan.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCHUANCARD);
@@ -569,7 +571,7 @@ bool GameLayer::checkSao()
 		refrishCardPos();
 
 		//特效
-		string str = "gold.png";
+		string str = "effect/sao.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_SAOCARD);
@@ -630,7 +632,7 @@ bool GameLayer::checkKaiduo()
 		refrishCardPos();
 
 				//特效
-		string str = "gold.png";
+		string str = "effect/kaiduo.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
@@ -647,7 +649,7 @@ bool GameLayer::checkKaiduo()
 		refrishCardPos();
 
 				//特效
-		string str = "gold.png";
+		string str = "effect/kaiduo.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
@@ -664,7 +666,7 @@ bool GameLayer::checkKaiduo()
 		refrishCardPos();
 
 				//特效
-		string str = "gold.png";
+		string str = "effect/kaiduo.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
@@ -704,7 +706,7 @@ bool GameLayer::checkChongDuo()
 		refrishCardPos();
 
 				//特效
-		string str = "gold.png";
+		string str = "effect/chongduo.png";
 		addEffect(str);
 
 		_eventDispatcher->dispatchCustomEvent(SHOW_KAIDUOCARD);
@@ -731,7 +733,7 @@ bool GameLayer::checkChongDuo()
 		refrishCardPos();
 
 		//特效
-		string str = "gold.png";
+		string str = "effect/chongduo.png";
 		addEffect(str);
 
 		isAction = true;

@@ -100,7 +100,7 @@ void ChiCardLayer::onTouchEnded(Touch *touch, Event *unused_event)
 			//先把新牌添加到手里，再删除
 			_gameLayer->t_Player[2].addCard(_gameLayer->m_newCard.m_Type, _gameLayer->m_newCard.m_Value);
 			//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我吃牌！"));
-			GetLayer::getInstance()->getgameLayer()->addEffect("chi.png");
+			GetLayer::getInstance()->getgameLayer()->addEffect("effect/chi.png");
 			for (auto &_scard : m_tmpChiCardList)
 			{
 				if (_scard->getTag() / 3 == _cardTag_0)
@@ -227,7 +227,7 @@ void ChiCardLayer::onTouchEnded(Touch *touch, Event *unused_event)
 		{
 			_gameLayer->t_Player[2].addCard(_gameLayer->m_newCard.m_Type, _gameLayer->m_newCard.m_Value);
 			//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我吃牌！"));
-			GetLayer::getInstance()->getgameLayer()->addEffect("chi.png");
+			GetLayer::getInstance()->getgameLayer()->addEffect("effect/chi.png");
 
 			for (auto &_scard : m_tmpChiCardVec)
 			{
