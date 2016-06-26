@@ -359,7 +359,7 @@ bool GameLayer::checkPeng()
 void GameLayer::doPengACard()
 {
 	t_Player[2].doPengACard(m_newCard.m_Type, m_newCard.m_Value);
-	ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我碰！！！"));
+	//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我碰！！！"));
 
 		//特效
 	string str = "peng.png";
@@ -505,7 +505,7 @@ bool GameLayer::checkSaochuan()
 	bool isAction = false;
 	if (t_Player[2].checkSaoChuanACard(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌扫穿！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌扫穿！！！"));
 		t_Player[2].doSaoChuanACard(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -524,7 +524,7 @@ bool GameLayer::checkSaochuan()
 
 	if (t_Player[2].checkSao_saoChuanACard(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫的扫穿！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫的扫穿！！！"));
 		t_Player[2].doSao_SaoChuan(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -564,7 +564,7 @@ bool GameLayer::checkSao()
 {
 	if (t_Player[2].checkSaoACard(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫！！！"));
 		t_Player[2].doSaoACard(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -625,7 +625,7 @@ bool GameLayer::checkKaiduo()
 	bool isAction = false;
 	if (t_Player[2].checkKaiduoACard(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌开舵！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"起手牌开舵！！！"));
 		t_Player[2].doKaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -642,7 +642,7 @@ bool GameLayer::checkKaiduo()
 
 	if (t_Player[2].checkKaiDuo_Sao(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫的开舵！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫的开舵！！！"));
 		t_Player[2].doSao_KaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -659,7 +659,7 @@ bool GameLayer::checkKaiduo()
 
 	if (t_Player[2].checkKaiDuo_peng(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"碰的开舵！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"碰的开舵！！！"));
 		t_Player[2].doPeng_kaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -699,7 +699,7 @@ bool GameLayer::checkChongDuo()
 	bool isAction = false;
 	if (t_Player[2].checkChongDuo_kaiDuo(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"!!开舵的重舵！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"!!开舵的重舵！！！"));
 		t_Player[2].doChongDuo_kaiDuo(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -726,7 +726,7 @@ bool GameLayer::checkChongDuo()
 	//扫穿还没处理好
 	if (t_Player[2].checkChongDuo_saoChuan(m_newCard.m_Type, m_newCard.m_Value))
 	{
-		ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫穿的重舵！！！"));
+		//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"扫穿的重舵！！！"));
 		t_Player[2].doChongDuo_saoChuan(m_newCard.m_Type, m_newCard.m_Value);
 		refrishCardPos();
 
@@ -853,12 +853,12 @@ void GameLayer::onTouchEnded(Touch *touch, Event *unused_event)
 			if (_type == 0)
 			{
 				cout << "打了张：小" << _value << endl;
-				ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我打了张小") + Value(_value).asString());
+				//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我打了张小") + Value(_value).asString());
 			}
 			else
 			{
 				cout << "打了张：大" << _value << endl;
-				ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我打了张大") + Value(_value).asString());
+				//ToastManger::getInstance()->createToast(CommonFunction::WStrToUTF8(L"我打了张大") + Value(_value).asString());
 			}
 
 			t_Player[2].delACard(_type, _value);
