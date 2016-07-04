@@ -1113,7 +1113,7 @@ void GameLayer::xipai()
 	logAllCard();
 	createMyCardWall();
 
-	SplitCardWall();
+	//SplitCardWall();
 
 
 }
@@ -1184,6 +1184,7 @@ void GameLayer::createMyCardWall()
 //分牌 4，3，2，1
 void  GameLayer::SplitCardWall()
 {
+
 	vector<int> mycard[2];
 	if (t_Player[2].m_MyCard[0].size() > 0)
 	{
