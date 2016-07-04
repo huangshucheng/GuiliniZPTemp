@@ -244,6 +244,7 @@ void ShowLayer::flyToHand()
 		auto callfun_1 = CallFunc::create([=](){
 			m_GameLayer->t_Player[2].addCard(m_GameLayer->m_newCard.m_Type, m_GameLayer->m_newCard.m_Value);
 			m_GameLayer->refrishCardPos();
+			m_GameLayer->t_Player[2].notChi();
 		});
 		auto seq = Sequence::create(delay, move, callfun, callfun_1, nullptr);
 		m_NewCard->runAction(seq);

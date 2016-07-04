@@ -10,7 +10,8 @@ state(0)
 }
 ZiPai::~ZiPai()
 {
-
+	m_NotChiVec[0].clear();
+	m_NotChiVec[1].clear();
 }
 
 void ZiPai::playerAction()
@@ -32,6 +33,7 @@ int ZiPai:: getState()
 //检测吃顺牌
 bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌	
 {
+	//若有三张或四张一样的，则不能拆开来吃
 	if (m_TempChiCardVec.size()>0)
 	{
 		m_TempChiCardVec.clear();
@@ -46,18 +48,6 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		std::vector<int >::iterator iter = m_MyCard[p_type].begin();
 		for (; iter != m_MyCard[p_type].end(); ++iter)
 		{
-			//若有三张或四张一样的，则不能拆开来吃
-			/*if (m_MyCard[p_type].size()>=3)
-			{
-				for (int i = 0; i < m_MyCard[p_type].size() - 2; i++)
-				{
-					if (true)
-					{
-
-					}
-				}
-			}*/
-			
 			if ((*iter) == p_value - 2)
 			{
 				vec1.push_back(*iter);
@@ -96,7 +86,24 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		t_Chi.m_Value1 = vec1[0];		//手牌
 		t_Chi.m_Value2 = vec2[0];		//手牌
 		t_Chi.m_Value3 = p_value;		//摸的牌 或上家的牌
-		m_TempChiCardVec.push_back(t_Chi);
+		//m_TempChiCardVec.push_back(t_Chi);
+
+		//改。
+		if (m_NotChiVec[p_type].empty())
+		{
+			m_TempChiCardVec.push_back(t_Chi);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[p_type])
+			{
+				if (_notChi != vec1[0] && _notChi != vec2[0])
+				{
+					m_TempChiCardVec.push_back(t_Chi);
+					break;
+				}
+			}
+		}
 	}
 
 	//摸的牌中等
@@ -107,7 +114,24 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		t_Chi.m_Value1 = vec2[0];		//手牌
 		t_Chi.m_Value2 = p_value;		//手牌
 		t_Chi.m_Value3 = vec4[0];		//摸的牌 或上家的牌
-		m_TempChiCardVec.push_back(t_Chi);
+		//m_TempChiCardVec.push_back(t_Chi);
+
+		//改。
+		if (m_NotChiVec[p_type].empty())
+		{
+			m_TempChiCardVec.push_back(t_Chi);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[p_type])
+			{
+				if (_notChi != vec2[0] && _notChi != vec4[0])
+				{
+					m_TempChiCardVec.push_back(t_Chi);
+					break;
+				}
+			}
+		}
 	}
 
 	//摸的牌最小
@@ -118,7 +142,24 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		t_Chi.m_Value1 = p_value;		//手牌
 		t_Chi.m_Value2 = vec4[0];		//手牌
 		t_Chi.m_Value3 = vec5[0];		//摸的牌 或上家的牌
-		m_TempChiCardVec.push_back(t_Chi);
+		//m_TempChiCardVec.push_back(t_Chi);
+
+		//改。
+		if (m_NotChiVec[p_type].empty())
+		{
+			m_TempChiCardVec.push_back(t_Chi);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[p_type])
+			{
+				if (_notChi != vec4[0] && _notChi != vec5[0])
+				{
+					m_TempChiCardVec.push_back(t_Chi);
+					break;
+				}
+			}
+		}
 	}
 
 	if (m_TempChiCardVec.size()>0)
@@ -217,8 +258,24 @@ bool	ZiPai::checkChiACard2_7_10(int p_type, int p_value)
 			t_Chi.m_Value1 = chiVec_1[p_type][0];
 			t_Chi.m_Value2 = chiVec_2[p_type][0];
 			t_Chi.m_Value3 = p_value;
-			m_TempChiCardVec.push_back(t_Chi);
-			//log("chi..2.7.10");
+			//m_TempChiCardVec.push_back(t_Chi);	
+
+			//改。
+			if (m_NotChiVec[p_type].empty())
+			{
+				m_TempChiCardVec.push_back(t_Chi);	
+			}
+			else
+			{
+				for (auto &_notChi : m_NotChiVec[p_type])
+				{
+					if (_notChi != chiVec_1[p_type][0] && _notChi != chiVec_2[p_type][0])
+					{
+						m_TempChiCardVec.push_back(t_Chi);
+						break;
+					}
+				}
+			}
 		}
 	}
 
@@ -402,37 +459,64 @@ bool	ZiPai::checkChiACardA_A_a(int p_type, int p_value)
 		T = 1; V = vec1[0];
 		T = 1; V = vec1[0];*/
 
-		/*ChiCard t_Chi;
-		t_Chi.m_Type = 1;
-		t_Chi.m_Value1 = vec[1][0];
-		t_Chi.m_Value2 = vec[1][0];
-		m_TempChiCardVec.push_back(t_Chi);*/
-
 		CardData t_Chi_1 = { 1, vec[1][0]};
 		CardData t_Chi_2 = { 1, vec[1][0]};
 		CardData t_Chi_3 = { 0, p_value };
 
-		m_TempChiCardList.push_back(t_Chi_1);
+		/*m_TempChiCardList.push_back(t_Chi_1);
 		m_TempChiCardList.push_back(t_Chi_2);
-		m_TempChiCardList.push_back(t_Chi_3);
+		m_TempChiCardList.push_back(t_Chi_3);*/
+
+		if (m_NotChiVec[1].empty())
+		{
+			m_TempChiCardList.push_back(t_Chi_1);
+			m_TempChiCardList.push_back(t_Chi_2);
+			m_TempChiCardList.push_back(t_Chi_3);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[1])
+			{
+				if (_notChi != vec[1][0])
+				{
+					m_TempChiCardList.push_back(t_Chi_1);
+					m_TempChiCardList.push_back(t_Chi_2);
+					m_TempChiCardList.push_back(t_Chi_3);
+					break;
+				}
+			}
+		}
 	}
 
 	if (vec[0].size() == 2) //手里2个小写  来了一张大写
 	{
-		/*ChiCard t_Chi;
-		t_Chi.m_Type = 0;
-		t_Chi.m_Value1 = vec[0][0];
-		t_Chi.m_Value2 = vec[0][0];
-		m_TempChiCardVec.push_back(t_Chi);*/
-
 		CardData t_Chi_1 = { 0, vec[0][0] };
 		CardData t_Chi_2 = { 0, vec[0][0] };
 		CardData t_Chi_3 = { 1, p_value };
 
-		m_TempChiCardList.push_back(t_Chi_1);
+		/*m_TempChiCardList.push_back(t_Chi_1);
 		m_TempChiCardList.push_back(t_Chi_2);
-		m_TempChiCardList.push_back(t_Chi_3);
+		m_TempChiCardList.push_back(t_Chi_3);*/
 
+		if (m_NotChiVec[0].empty())
+		{
+			m_TempChiCardList.push_back(t_Chi_1);
+			m_TempChiCardList.push_back(t_Chi_2);
+			m_TempChiCardList.push_back(t_Chi_3);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[0])
+			{
+				if (_notChi != vec[0][0])
+				{
+					m_TempChiCardList.push_back(t_Chi_1);
+					m_TempChiCardList.push_back(t_Chi_2);
+					m_TempChiCardList.push_back(t_Chi_3);
+					break;
+				}
+			}
+		}
 	}
 
 	if (m_TempChiCardList.size() > 0)
@@ -534,32 +618,80 @@ bool	ZiPai::checkChiACardA_A_a_a(int p_type, int p_value)
 
 	if (vec1[0].size()>0 && vec1[1].size()>0)//来了张小写的 (一张大写，两张小写)
 	{
-		/*ChiCard t_Chi;
-		t_Chi.m_Type = 1;
-		t_Chi.m_Value1 = vec1[1][0];
-		m_TempChiCardVec.push_back(t_Chi);*/
-
 		CardData t_Chi_1 = { 1, vec1[1][0] };
 		CardData t_Chi_2 = { 0, vec1[1][0] };
 		CardData t_Chi_3 = { 0, vec1[1][0] };
-		m_TempChiCardList.push_back(t_Chi_1);
+
+		/*m_TempChiCardList.push_back(t_Chi_1);
 		m_TempChiCardList.push_back(t_Chi_2);
-		m_TempChiCardList.push_back(t_Chi_3);
+		m_TempChiCardList.push_back(t_Chi_3);*/
+
+		if (m_NotChiVec[1].empty() && m_NotChiVec[0].empty())
+		{
+			m_TempChiCardList.push_back(t_Chi_1);
+			m_TempChiCardList.push_back(t_Chi_2);
+			m_TempChiCardList.push_back(t_Chi_3);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[1])
+			{
+				if (_notChi != vec1[1][0])
+				{
+					m_TempChiCardList.push_back(t_Chi_1);
+					break;
+				}
+			}
+
+			for (auto &_notChi : m_NotChiVec[0])
+			{
+				if (_notChi != vec1[1][0])
+				{
+					m_TempChiCardList.push_back(t_Chi_2);
+					m_TempChiCardList.push_back(t_Chi_3);
+					break;
+				}
+			}
+		}
 	}
 
-	if (vec2[0].size()>0 && vec2[1].size()>0)//来了张大写的 （一张小写，两张大写）
+	if (vec2[0].size() > 0 && vec2[1].size() > 0)//来了张大写的 （一张小写，两张大写）
 	{
-		/*ChiCard t_Chi;
-		t_Chi.m_Type = 0;
-		t_Chi.m_Value1 = vec2[0][0];
-		m_TempChiCardVec.push_back(t_Chi);*/
-
-		CardData t_Chi_1 = { 0,	vec2[0][0] };
+		CardData t_Chi_1 = { 0, vec2[0][0] };
 		CardData t_Chi_2 = { 1, vec2[0][0] };
 		CardData t_Chi_3 = { 1, vec2[0][0] };
-		m_TempChiCardList.push_back(t_Chi_1);
+
+		/*m_TempChiCardList.push_back(t_Chi_1);
 		m_TempChiCardList.push_back(t_Chi_2);
-		m_TempChiCardList.push_back(t_Chi_3);
+		m_TempChiCardList.push_back(t_Chi_3);*/
+
+		if (m_NotChiVec[1].empty() && m_NotChiVec[0].empty())
+		{
+			m_TempChiCardList.push_back(t_Chi_1);
+			m_TempChiCardList.push_back(t_Chi_2);
+			m_TempChiCardList.push_back(t_Chi_3);
+		}
+		else
+		{
+			for (auto &_notChi : m_NotChiVec[1])
+			{
+				if (_notChi != vec2[0][0])
+				{
+					m_TempChiCardList.push_back(t_Chi_1);
+					break;
+				}
+			}
+
+			for (auto &_notChi : m_NotChiVec[0])
+			{
+				if (_notChi != vec2[0][0])
+				{
+					m_TempChiCardList.push_back(t_Chi_2);
+					m_TempChiCardList.push_back(t_Chi_3);
+					break;
+				}
+			}
+		}
 	}
 
 	if (m_TempChiCardList.size()>0)
@@ -2559,4 +2691,79 @@ int 	ZiPai::checkHushu()
 	}
 
 	return m_Score;
+}
+//判断不能吃的牌
+void	ZiPai::notChi()
+{
+	vector<int> mycard[2];
+
+	for (int i = 0; i<2;i++)
+	{
+		if (!mycard[i].empty())
+		{
+			mycard[i].clear();
+		}
+
+		if (!m_NotChiVec[i].empty())
+		{
+			m_NotChiVec[i].clear();
+		}
+	}
+
+	if (m_MyCard[0].size() > 0)
+	{
+		for (int i = 0; i < m_MyCard[0].size(); i++)
+		{
+			mycard[0].push_back(m_MyCard[0].at(i));
+		}
+	}
+	if (m_MyCard[1].size() > 0)
+	{
+		for (int i = 0; i < m_MyCard[1].size(); i++)
+		{
+			mycard[1].push_back(m_MyCard[1].at(i));
+		}
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		if (m_MyCard[i].size() > 0)
+		{
+			for (int k = 0; k < m_MyCard[i].size(); k++)
+			{
+				int count = 0;
+				for (int y = 0; y < mycard[i].size(); y++)
+				{
+					if (m_MyCard[i].at(k) == mycard[i].at(y))
+					{
+						count++;
+					}
+					else
+					{
+						continue;
+					}
+				}
+
+				if (count >= 3)
+				{
+					m_NotChiVec[i].push_back(m_MyCard[i].at(k));
+				}
+			}
+		}
+	}
+	if (!m_NotChiVec[0].empty())
+	{
+		for (auto &_iter : m_NotChiVec[0])
+		{
+			std::cout <<"小写不能吃：" <<_iter << std::endl;
+		}
+	}
+	std::cout << "==================="<< std::endl;
+	if (!m_NotChiVec[1].empty())
+	{
+		for (auto &_iter : m_NotChiVec[1])
+		{
+			std::cout <<"大写不能吃："<< _iter << std::endl;
+		}
+	}
 }

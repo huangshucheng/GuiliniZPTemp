@@ -172,6 +172,7 @@ bool GameLayer::init()
 	runAction(_seq);
 
 	addChild(CardEffect::create());
+
 	return true;
 }
 
@@ -455,8 +456,8 @@ bool GameLayer::checkChi()
 
 		isAction = true;
 	}
-
-	if (t_Player[2].checkChiACardA_A_a_a(m_newCard.m_Type, m_newCard.m_Value))
+	//有问题
+	/*if (t_Player[2].checkChiACardA_A_a_a(m_newCard.m_Type, m_newCard.m_Value))
 	{
 		for (auto &_data : t_Player[2].m_TempChiCardList)
 		{
@@ -464,7 +465,7 @@ bool GameLayer::checkChi()
 		}
 
 		isAction = true;
-	}
+	}*/
 
 	if (isAction)
 	{
@@ -1182,6 +1183,7 @@ void GameLayer::createMyCardWall()
 //分牌 4，3，2，1
 void  GameLayer::SplitCardWall()
 {
+
 	vector<int> mycard[2];
 	if (t_Player[2].m_MyCard[0].size() > 0)
 	{

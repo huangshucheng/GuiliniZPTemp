@@ -71,6 +71,8 @@ public:
 
 	std::vector<ShowCard* >  AAaaCardSprite;
 
+	std::vector<int >		m_NotChiVec[2];				//不能拆开来吃的牌（三张或四张）
+
 public:
 
 	void	logAllCard();							//打印所有手牌
@@ -84,6 +86,7 @@ public:
 	void	addCard(int p_type, int p_value);	//初始化手牌
 	bool	delACard(int p_type, int p_value);	//打一张牌
 	void	playerAction();						//使用状态机
+	void	notChi();							//判断不能吃的牌
 public:
 
 	//牌型检测
