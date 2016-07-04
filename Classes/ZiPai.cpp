@@ -2,9 +2,12 @@
 #include "layerUtils/ToastLayer/ToastManger.h"
 #include "utils/CommonFunction.h"
 
+#include "utils/GetScore.h"
+
 ZiPai::ZiPai():
 m_Score(0),
-state(0)
+state(0),
+isCheck(false)
 {
 	playerAction();
 }
@@ -32,6 +35,10 @@ int ZiPai:: getState()
 //检测吃顺牌
 bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌	
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempChiCardVec.size()>0)
 	{
 		m_TempChiCardVec.clear();
@@ -135,6 +142,10 @@ bool ZiPai::doChiA_B_C(int p_type, int p_value, int num)
 
 bool	ZiPai::checkChiACard2_7_10(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempChiCardVec.size()>0)
 	{
 		m_TempChiCardVec.clear();
@@ -347,7 +358,10 @@ bool	ZiPai::checkChiACardA_A_a(int p_type, int p_value)
 	{
 		m_TempChiCardVec.clear();
 	}*/
-
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempChiCardList.size()>0)
 	{
 		m_TempChiCardList.clear();
@@ -465,7 +479,10 @@ bool	ZiPai::checkChiACardA_A_a_a(int p_type, int p_value)
 	{
 		m_TempChiCardVec.clear();
 	}*/
-
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempChiCardList.size()>0)
 	{
 		m_TempChiCardList.clear();
@@ -764,6 +781,10 @@ bool	ZiPai::delACard(int p_type, int p_value)
 //碰
 bool	ZiPai::checkPengACard(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempPengCardVec.size()>0)
 	{
 		m_TempPengCardVec.clear();
@@ -817,6 +838,10 @@ bool	ZiPai::doPengACard(int p_type, int p_value)
 //扫
 bool	ZiPai::checkSaoACard(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempSaoCardVec.size()>0)
 	{
 		m_TempSaoCardVec.clear();
@@ -873,6 +898,10 @@ bool	ZiPai::checkSaoChuanACard(int p_type, int p_value)
 {
 	//自己手中有三张牌  自己摸到一张牌
 	//桌子上扫的三张牌  自己摸到一张
+	if (isCheck)
+	{
+		return false;
+	}
 
 	if (m_TempSaoChuanCardVec.size()>0)
 	{
@@ -930,6 +959,10 @@ bool	ZiPai::doSaoChuanACard(int p_type, int p_value)
 //扫的扫穿
 bool	ZiPai::checkSao_saoChuanACard(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempSaoChuanCardVec.size()>0)
 	{
 		m_TempSaoChuanCardVec.clear();
@@ -1047,7 +1080,10 @@ bool	ZiPai::checkKaiduoACard(int p_type, int p_value)
 	2.碰的牌 别人或自己 摸出一张  不能是别家打出的牌
 	3.扫过之后，别家摸出一张 或打出一张
 	*/
-
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempKaiDuoCardVec.size()>0)
 	{
 		m_TempKaiDuoCardVec.clear();
@@ -1104,6 +1140,10 @@ bool	ZiPai::doKaiDuo(int p_type, int p_value)
 //扫的开舵
 bool	ZiPai::checkKaiDuo_Sao(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempKaiDuoCardVec.size()>0)
 	{
 		m_TempKaiDuoCardVec.clear();
@@ -1166,6 +1206,10 @@ bool	ZiPai::doSao_KaiDuo(int p_type, int p_value)
 //碰的开舵
 bool	ZiPai::checkKaiDuo_peng(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_TempKaiDuoCardVec.size()>0)
 	{
 		m_TempKaiDuoCardVec.clear();
@@ -1225,6 +1269,10 @@ bool	ZiPai::doPeng_kaiDuo(int p_type, int p_value)
 //重舵 扫穿
 bool	ZiPai::checkChongDuo_saoChuan(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	//重舵实现扫穿的功能（放到扫穿的vec）  重舵实现开舵的功能(放到开舵的vec)  
 	//手里三张一样的牌   碰的牌   扫的牌
 	if (m_SaoChuanCardVec[0].size()>0 ||
@@ -1265,6 +1313,10 @@ bool	ZiPai::doChongDuo_saoChuan(int p_type, int p_value)
 //重舵 开舵
 bool	ZiPai::checkChongDuo_kaiDuo(int p_type, int p_value)
 {
+	if (isCheck)
+	{
+		return false;
+	}
 	if (m_SaoChuanCardVec[0].size()>0 ||
 		m_KaiDuoCardVec[0].size()>0 ||
 		m_SaoChuanCardVec[1].size()>0 ||
@@ -1531,85 +1583,96 @@ bool	ZiPai::checkHuPai(int p_type, int p_value)
 	{
 		//m_MyCard[p_type].push_back(p_value);//把那张能胡的牌放到手里
 
-		int hushu = checkHushu();
-		UserDefault::getInstance()->setIntegerForKey("HUSHU", hushu);	//保存胡数
+		//int hushu = checkHushu();
+		//UserDefault::getInstance()->setIntegerForKey("HUSHU", hushu);	//保存胡数
 
-		//手里的牌放到存储器
+		//判断胡数是否大于10胡
+		if ((m_Score + GetScore::getInstance()->getScore()) >= 10)
 		{
-			for (int i = 0; i < m_MyCard[0].size(); i++)
+			//计算手牌胡数
+			GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + m_Score);
+			//手里的牌放到存储器
 			{
-				Win::getInstance()->setVector(0, m_MyCard[0][i]);
-			}
-			for (int j = 0; j < m_MyCard[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_MyCard[1][j]);
-			}
+				for (int i = 0; i < m_MyCard[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_MyCard[0][i]);
+				}
+				for (int j = 0; j < m_MyCard[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_MyCard[1][j]);
+				}
 
-			for (int i = 0; i < m_PengCardVec[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_PengCardVec[0][i]);
-			}
-			for (int j = 0; j < m_PengCardVec[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_PengCardVec[1][j]);
-			}
+				for (int i = 0; i < m_PengCardVec[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_PengCardVec[0][i]);
+				}
+				for (int j = 0; j < m_PengCardVec[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_PengCardVec[1][j]);
+				}
 
-			for (int i = 0; i < m_SaoCardVec[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_SaoCardVec[0][i]);
-			}
-			for (int j = 0; j < m_SaoCardVec[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_SaoCardVec[1][j]);
-			}
+				for (int i = 0; i < m_SaoCardVec[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_SaoCardVec[0][i]);
+				}
+				for (int j = 0; j < m_SaoCardVec[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_SaoCardVec[1][j]);
+				}
 
-			for (int i = 0; i < m_GuoSaoCardBVec[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_GuoSaoCardBVec[0][i]);
-			}
-			for (int j = 0; j < m_GuoSaoCardBVec[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_GuoSaoCardBVec[1][j]);
-			}
+				for (int i = 0; i < m_GuoSaoCardBVec[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_GuoSaoCardBVec[0][i]);
+				}
+				for (int j = 0; j < m_GuoSaoCardBVec[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_GuoSaoCardBVec[1][j]);
+				}
 
-			for (int i = 0; i < m_SaoChuanCardVec[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_SaoChuanCardVec[0][i]);
-			}
-			for (int j = 0; j < m_SaoChuanCardVec[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_SaoChuanCardVec[1][j]);
-			}
+				for (int i = 0; i < m_SaoChuanCardVec[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_SaoChuanCardVec[0][i]);
+				}
+				for (int j = 0; j < m_SaoChuanCardVec[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_SaoChuanCardVec[1][j]);
+				}
 
-			for (int i = 0; i < m_ChiCardVec[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_ChiCardVec[0][i]);
-			}
-			for (int j = 0; j < m_ChiCardVec[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_ChiCardVec[1][j]);
-			}
+				for (int i = 0; i < m_ChiCardVec[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_ChiCardVec[0][i]);
+				}
+				for (int j = 0; j < m_ChiCardVec[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_ChiCardVec[1][j]);
+				}
 
-			for (int i = 0; i < m_ChiSpeclal[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_ChiSpeclal[0][i]);
-			}
-			for (int j = 0; j < m_ChiSpeclal[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_ChiSpeclal[1][j]);
-			}
+				for (int i = 0; i < m_ChiSpeclal[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_ChiSpeclal[0][i]);
+				}
+				for (int j = 0; j < m_ChiSpeclal[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_ChiSpeclal[1][j]);
+				}
 
-			for (int i = 0; i < m_KaiDuoCardVec[0].size(); i++)
-			{
-				Win::getInstance()->setVector(0, m_KaiDuoCardVec[0][i]);
+				for (int i = 0; i < m_KaiDuoCardVec[0].size(); i++)
+				{
+					Win::getInstance()->setVector(0, m_KaiDuoCardVec[0][i]);
+				}
+				for (int j = 0; j < m_KaiDuoCardVec[1].size(); j++)
+				{
+					Win::getInstance()->setVector(1, m_KaiDuoCardVec[1][j]);
+				}
 			}
-			for (int j = 0; j < m_KaiDuoCardVec[1].size(); j++)
-			{
-				Win::getInstance()->setVector(1, m_KaiDuoCardVec[1][j]);
-			}
+			return true;
+		}
+		else
+		{
+			//胡数达不到，接下来的牌都不能再吃或者碰。
+			isCheck = true;
 		}
 
-		return true;
 	}
 
 	return false;
@@ -1691,8 +1754,10 @@ void	ZiPai::check_4_card()
 				m_MyCard_Temp[0].end()
 				);
 		}
-		int temp_score = value.size() / 4 + 9;
+		int temp_score = (value.size() / 4) * 9;
 		m_Score += temp_score;
+		////计算手牌胡数
+		//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + temp_score);
 
 		value.clear();
 	}
@@ -1717,8 +1782,10 @@ void	ZiPai::check_4_card()
 				);
 		}
 
-		int temp_score = value.size() / 4 + 12;
+		int temp_score = (value.size() / 4) * 12;
 		m_Score += temp_score;
+		////计算手牌胡数
+		//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + temp_score);
 
 		value.clear();
 	}
@@ -1757,8 +1824,10 @@ void	ZiPai::check_3_card()
 				);
 		}
 
-		int temp_score = value.size() / 3 + 3;
+		int temp_score = (value.size() / 3) * 3;
 		m_Score += temp_score;
+		////计算手牌胡数
+		//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + temp_score);
 		value.clear();
 	}
 
@@ -1781,8 +1850,10 @@ void	ZiPai::check_3_card()
 				m_MyCard_Temp[1].end()
 				);
 		}
-		int temp_score = value.size() / 3 + 6;
+		int temp_score = (value.size() / 3) * 6;
 		m_Score += temp_score;
+		////计算手牌胡数
+		//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + temp_score);
 		value.clear();
 	}
 
@@ -2142,6 +2213,8 @@ void	ZiPai::check_2710_card()
 				m_MyCard_Temp[0].end()
 				);
 			m_Score += 6;
+			////计算手牌胡数
+			//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + 6);
 		}
 		else if (vec_2.size() >0 && vec_7.size()> 0 && vec_10.size()>0) //不是全部有两个，删掉一个2 7 10
 		{
@@ -2176,6 +2249,8 @@ void	ZiPai::check_2710_card()
 				}
 			}
 			m_Score += 3;
+			////计算手牌胡数
+			//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + 3);
 		}
 	}
 	vec_2.clear();
@@ -2216,6 +2291,8 @@ void	ZiPai::check_2710_card()
 				m_MyCard_Temp[1].end()
 				);
 			m_Score += 12;
+			////计算手牌胡数
+			//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + 12);
 		}
 		else if (vec_2.size() > 0 && vec_7.size() > 0 && vec_10.size() > 0)
 		{
@@ -2247,6 +2324,8 @@ void	ZiPai::check_2710_card()
 				}
 			}
 			m_Score += 6;
+			////计算手牌胡数
+			//GetScore::getInstance()->setScore(GetScore::getInstance()->getScore() + 6);
 
 		}
 	}

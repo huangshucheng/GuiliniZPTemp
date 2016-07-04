@@ -356,6 +356,7 @@ void AccountsLayer::quiteCallback(Ref* sender)
 		GetScore::getInstance()->showCardList.clear();
 		GetScore::getInstance()->setFanXin(0);
 		GetScore::getInstance()->setScore(0);
+		GetScore::getInstance()->setHuDuo(0);
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, WelcomeScene::createScene()));
 
 	}
@@ -368,6 +369,7 @@ void AccountsLayer::restartCallback(Ref* sender)
 		GetScore::getInstance()->showCardList.clear();
 		GetScore::getInstance()->setFanXin(0);
 		GetScore::getInstance()->setScore(0);
+		GetScore::getInstance()->setHuDuo(0);
 		Director::getInstance()->replaceScene(TransitionFade::create(0.5f, GameScene::createScene()));
 	}
 }

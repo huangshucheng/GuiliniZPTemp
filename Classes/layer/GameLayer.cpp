@@ -407,7 +407,6 @@ void GameLayer::doPengACard()
 bool GameLayer::checkChi()
 {
 	bool isAction = false;	//有可吃的
-
 	if (!m_TempChiCard.empty())
 	{
 		m_TempChiCard.clear();

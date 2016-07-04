@@ -200,4 +200,6 @@ public:
 private:
 	int m_Score;
 
+	bool isCheck; //是否还需要检测
+
 };
