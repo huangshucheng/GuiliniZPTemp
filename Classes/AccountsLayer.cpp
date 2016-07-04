@@ -409,7 +409,7 @@ void AccountsLayer::showWinCard(int player)
 
 	addAAaaUI(GetLayer::getInstance()->getgameLayer()->t_Player[player].m_ChiCardList);
 
-	//showMyCardWall(GetLayer::getInstance()->getgameLayer()->t_Player[player].m_MyCard);
+	showMyCardWall(GetLayer::getInstance()->getgameLayer()->t_Player[player].m_MyCard);
 
 	if (!m_FourCardSprite.empty())
 	{
@@ -419,14 +419,14 @@ void AccountsLayer::showWinCard(int player)
 	{
 		showThreeCardVer(m_ThreeCardSprite);
 	}
-	//if (!m_TowCardSprite.empty())
-	//{
-	//	showTowCardVer(m_TowCardSprite);
-	//}
-	//if (!m_OneCardSprite.empty())
-	//{
-	//	/*	showOneCardVer(m_OneCardSprite);*/
-	//}
+	if (!m_TowCardSprite.empty())
+	{
+		showTowCardVer(m_TowCardSprite);
+	}
+	if (!m_OneCardSprite.empty())
+	{
+		/*	showOneCardVer(m_OneCardSprite);*/
+	}
 
 	log("m_TowCardSprite:%d", m_TowCardSprite.size());
 
@@ -478,8 +478,8 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 	{
 		if (i == 0)
 		{
-			value = ver[0][i];
-			auto _card = ShowCard::create(0, ver[0][i]);//1 
+			value = ver[0].at(i);
+			auto _card = ShowCard::create(0, ver[0].at(i));//1 
 			if (_card)
 			{
 				addChild(_card);
@@ -490,9 +490,9 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 			{
 				for (int j = 0; j < ver[1].size(); j++)
 				{
-					if (ver[1][j] == value)
+					if (ver[1].at(j) == value)
 					{
-						auto _card = ShowCard::create(1, ver[1][j]);//3 4 5 7
+						auto _card = ShowCard::create(1, ver[1].at(j));//3 4 5 7
 						if (_card)
 						{
 							addChild(_card);
@@ -505,14 +505,14 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 		}
 		else
 		{
-			value = ver[0][i - 1];
-			if (value != ver[0][i])
+			value = ver[0].at(i - 1);
+			if (value != ver[0].at(i))
 			{
 				for (int j = 0; j < ver[1].size(); j++)
 				{
-					if (ver[1][j] == ver[0][i - 1])
+					if (ver[1].at(j) == ver[0].at(i - 1))
 					{
-						auto _card = ShowCard::create(1, ver[1][j]);//3 4 5 7
+						auto _card = ShowCard::create(1, ver[1].at(j));//3 4 5 7
 						if (_card)
 						{
 							addChild(_card);
@@ -521,7 +521,7 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 						}
 					}
 				}//
-				auto _card = ShowCard::create(0, ver[0][i]);//6  8
+				auto _card = ShowCard::create(0, ver[0].at(i));//6  8
 				if (_card)
 				{
 					addChild(_card);
@@ -532,9 +532,9 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 				{
 					for (int j = 0; j < ver[1].size(); j++)
 					{
-						if (ver[1][j] == ver[0][i])
+						if (ver[1].at(j) == ver[0].at(i))
 						{
-							auto _card = ShowCard::create(1, ver[1][j]);//3 4 5 7
+							auto _card = ShowCard::create(1, ver[1].at(j));//3 4 5 7
 							if (_card)
 							{
 								addChild(_card);
@@ -547,7 +547,7 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 			}
 			else
 			{
-				auto _card = ShowCard::create(0, ver[0][i]);//2 9
+				auto _card = ShowCard::create(0, ver[0].at(i));//2 9
 				if (_card)
 				{
 					addChild(_card);
@@ -558,9 +558,9 @@ void AccountsLayer::addAAaaUI(vector<int> ver[2])
 				{
 					for (int j = 0; j < ver[1].size(); j++)
 					{
-						if (ver[1][j] == ver[0][i])
+						if (ver[1].at(j) == ver[0].at(i))
 						{
-							auto _card = ShowCard::create(1, ver[1][j]);//3 4 5 7
+							auto _card = ShowCard::create(1, ver[1].at(j));//3 4 5 7
 							if (_card)
 							{
 								addChild(_card);
@@ -587,7 +587,7 @@ void  AccountsLayer::showThreeVer( vector<int> ver[2], vector<ShowCard*> verCard
 	{
 		for (int i = 0; i < ver[0].size(); i++)
 		{
-			auto _card = ShowCard::create(0, ver[0][i]);
+			auto _card = ShowCard::create(0, ver[0].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -600,7 +600,7 @@ void  AccountsLayer::showThreeVer( vector<int> ver[2], vector<ShowCard*> verCard
 	{
 		for (int i = 0; i < ver[1].size(); i++)
 		{
-			auto _card = ShowCard::create(1, ver[1][i]);
+			auto _card = ShowCard::create(1, ver[1].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -618,7 +618,7 @@ void  AccountsLayer::showFourVer( vector<int> ver[2], vector<ShowCard*> verCard)
 	{
 		for (int i = 0; i < ver[0].size(); i++)
 		{
-			auto _card = ShowCard::create(0, ver[0][i]);
+			auto _card = ShowCard::create(0, ver[0].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -631,7 +631,7 @@ void  AccountsLayer::showFourVer( vector<int> ver[2], vector<ShowCard*> verCard)
 	{
 		for (int i = 0; i < ver[1].size(); i++)
 		{
-			auto _card = ShowCard::create(1, ver[1][i]);
+			auto _card = ShowCard::create(1, ver[1].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -691,14 +691,14 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < ver[0].size(); i++)
 		{
-			mycard[0].push_back(ver[0][i]);
+			mycard[0].push_back(ver[0].at(i));
 		}
 	}
 	if (ver[1].size() > 0)
 	{
 		for (int i = 0; i < ver[1].size(); i++)
 		{
-			mycard[1].push_back(ver[1][i]);
+			mycard[1].push_back(ver[1].at(i));
 		}
 	}
 
@@ -714,7 +714,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 			int count = 0;
 			for (int y = 0; y < mycard[0].size(); y++)
 			{
-				if (ver[0][k] == mycard[0][y])
+				if (ver[0].at(k) == mycard[0].at(y))
 				{
 					count++;
 				}
@@ -725,18 +725,18 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 			}
 			if (count == 4)
 			{
-				Card_4[0].push_back(ver[0][k]);
+				Card_4[0].push_back(ver[0].at(k));
 			}if (count == 3)
 			{
-				Card_3[0].push_back(ver[0][k]);
+				Card_3[0].push_back(ver[0].at(k));
 			}
 			if (count == 2)
 			{
-				Card_2[0].push_back(ver[0][k]);
+				Card_2[0].push_back(ver[0].at(k));
 			}
 			if (count == 1)
 			{
-				Card_1[0].push_back(ver[0][k]);
+				Card_1[0].push_back(ver[0].at(k));
 			}
 		}
 	}
@@ -747,7 +747,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 			int count = 0;
 			for (int y = 0; y < mycard[1].size(); y++)
 			{
-				if (ver[1][k] == mycard[1][y])
+				if (ver[1].at(k) == mycard[1].at(y))
 				{
 					count++;
 				}
@@ -758,18 +758,18 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 			}
 			if (count == 4)
 			{
-				Card_4[1].push_back(ver[1][k]);
+				Card_4[1].push_back(ver[1].at(k));
 			}if (count == 3)
 			{
-				Card_3[1].push_back(ver[1][k]);
+				Card_3[1].push_back(ver[1].at(k));
 			}
 			if (count == 2)
 			{
-				Card_2[1].push_back(ver[1][k]);
+				Card_2[1].push_back(ver[1].at(k));
 			}
 			if (count == 1)
 			{
-				Card_1[1].push_back(ver[1][k]);
+				Card_1[1].push_back(ver[1].at(k));
 			}
 		}
 	}
@@ -779,7 +779,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < Card_4[0].size(); i++)
 		{
-			auto _card = ShowCard::create(0, Card_4[0][i]);
+			auto _card = ShowCard::create(0, Card_4[0].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -792,7 +792,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < Card_4[1].size(); i++)
 		{
-			auto _card = ShowCard::create(1, Card_4[1][i]);
+			auto _card = ShowCard::create(1, Card_4[1].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -805,7 +805,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < Card_3[0].size(); i++)
 		{
-			auto _card = ShowCard::create(0, Card_3[1][i]);
+			auto _card = ShowCard::create(0, Card_3[0].at(i)); //*1
 			if (_card)
 			{
 				addChild(_card);
@@ -817,7 +817,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < Card_3[1].size(); i++)
 		{
-			auto _card = ShowCard::create(1, Card_3[1][i]);
+			auto _card = ShowCard::create(1, Card_3[1].at(i));
 			if (_card)
 			{
 				addChild(_card);
@@ -830,14 +830,14 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < Card_2[0].size(); i++)
 		{
-			auto _card_1 = ShowCard::create(0, Card_2[0][i]);
+			auto _card_1 = ShowCard::create(0, Card_2[0].at(i));
 			if (_card_1)
 			{
 				addChild(_card_1);
 				/*m_ThreeCardSprite.push_back(_card_1);*/
 			}
 			i++;
-			auto _card_2 = ShowCard::create(0, Card_2[0][i]);
+			auto _card_2 = ShowCard::create(0, Card_2[0].at(i));
 			if (_card_2)
 			{
 				addChild(_card_2);
@@ -850,7 +850,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 				{
 					for (auto iter = Card_1[1].begin(); iter != Card_1[1].end();)
 					{
-						if (*iter == Card_2[0][i])
+						if (*iter == Card_2[0].at(i))
 						{
 							auto _card = ShowCard::create(1, *iter);
 							if (_card)
@@ -884,14 +884,14 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int i = 0; i < Card_2[1].size(); i++) //0123 //0
 		{
-			auto _card_1 = ShowCard::create(1, Card_2[1][i]); //0  
+			auto _card_1 = ShowCard::create(1, Card_2[1].at(i)); //0  
 			if (_card_1)
 			{
 				addChild(_card_1);
 				/*m_ThreeCardSprite.push_back(_card_1);*/
 			}
 			i++;
-			auto _card_2 = ShowCard::create(1, Card_2[1][i]); //1 3
+			auto _card_2 = ShowCard::create(1, Card_2[1].at(i)); //1 3
 			if (_card_2)
 			{
 				addChild(_card_2);
@@ -904,7 +904,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 				{
 					for (auto iter = Card_1[0].begin(); iter != Card_1[0].end();)
 					{
-						if (*iter == Card_2[1][i])
+						if (*iter == Card_2[1].at(i))
 						{
 							auto _card = ShowCard::create(0, *iter);
 							if (_card)
@@ -936,7 +936,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int j = 0; j < Card_1[0].size(); j++)
 		{
-			auto _card = ShowCard::create(0, Card_1[0][j]);
+			auto _card = ShowCard::create(0, Card_1[0].at(j));
 			if (_card)
 			{
 				addChild(_card);
@@ -948,7 +948,7 @@ void AccountsLayer::showMyCardWall(vector<int> ver[2])
 	{
 		for (int j = 0; j < Card_1[0].size(); j++)
 		{
-			auto _card = ShowCard::create(0, Card_1[0][j]);
+			auto _card = ShowCard::create(0, Card_1[0].at(j));
 			if (_card)
 			{
 				addChild(_card);
