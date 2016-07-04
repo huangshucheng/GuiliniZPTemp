@@ -444,6 +444,8 @@ void ShowLayer::showSaochuanCard()
 			auto _card = ShowCard::create(0, _saochuanList[0][i]);
 			if (_card)
 			{
+				_card->setCardState(ShowCard::ISSAO::YES);
+				_card->turnToBack();
 				addChild(_card);
 				m_tmpSaoChuanCardVec.pushBack(_card);
 			}
@@ -457,6 +459,8 @@ void ShowLayer::showSaochuanCard()
 			auto _card = ShowCard::create(1, _saochuanList[1][i]);
 			if (_card)
 			{
+				_card->setCardState(ShowCard::ISSAO::YES);
+				_card->turnToBack();
 				addChild(_card);
 				m_tmpSaoChuanCardVec.pushBack(_card);
 			}
@@ -500,6 +504,8 @@ void ShowLayer::showSaoCard()
 			auto _card = ShowCard::create(0, _saoList[0][i]);
 			if (_card)
 			{
+				_card->setCardState(ShowCard::ISSAO::YES);
+				_card->turnToBack();
 				addChild(_card);
 				m_tmpSaoCardVec.pushBack(_card);
 			}
@@ -513,6 +519,8 @@ void ShowLayer::showSaoCard()
 			auto _card = ShowCard::create(1, _saoList[1][i]);
 			if (_card)
 			{
+				_card->setCardState(ShowCard::ISSAO::YES);
+				_card->turnToBack();
 				addChild(_card);
 				m_tmpSaoCardVec.pushBack(_card);
 			}

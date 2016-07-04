@@ -1113,9 +1113,7 @@ void GameLayer::xipai()
 	logAllCard();
 	createMyCardWall();
 
-	SplitCardWall();
-
-
+	//SplitCardWall();
 }
 
 void GameLayer::logAllCard()

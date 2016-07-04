@@ -120,9 +120,9 @@ void ChooseLayer::initUI()
 void ChooseLayer::chiBtnCbk(Ref* psender)
 {
 	log("chi");
-	//_eventDispatcher->dispatchCustomEvent(SHOW_CHICARDLAYER);
-	_eventDispatcher->dispatchCustomEvent(HIDE_TIMECOUNT);
-	_eventDispatcher->dispatchCustomEvent(SHOW_REMAINLAYER);
+	_eventDispatcher->dispatchCustomEvent(SHOW_CHICARDLAYER);
+	//_eventDispatcher->dispatchCustomEvent(HIDE_TIMECOUNT);
+	//_eventDispatcher->dispatchCustomEvent(SHOW_REMAINLAYER);
 	//close();
 }
 

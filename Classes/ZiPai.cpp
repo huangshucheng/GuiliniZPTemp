@@ -46,6 +46,18 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		std::vector<int >::iterator iter = m_MyCard[p_type].begin();
 		for (; iter != m_MyCard[p_type].end(); ++iter)
 		{
+			//若有三张或四张一样的，则不能拆开来吃
+			/*if (m_MyCard[p_type].size()>=3)
+			{
+				for (int i = 0; i < m_MyCard[p_type].size() - 2; i++)
+				{
+					if (true)
+					{
+
+					}
+				}
+			}*/
+			
 			if ((*iter) == p_value - 2)
 			{
 				vec1.push_back(*iter);
