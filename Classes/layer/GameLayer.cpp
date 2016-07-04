@@ -408,7 +408,6 @@ void GameLayer::doPengACard()
 bool GameLayer::checkChi()
 {
 	bool isAction = false;	//有可吃的
-
 	if (!m_TempChiCard.empty())
 	{
 		m_TempChiCard.clear();
@@ -1276,14 +1275,7 @@ void  GameLayer::SplitCardWall()
 	reCardSprite();
 
 }
-//shuaxin分容器装牌
-struct CardPoint
-{
-	ShortCardSprite*		card_4;		
-	ShortCardSprite*		card_3;
-	ShortCardSprite*		card_2;
-	ShortCardSprite*		card_1;
-};
+
 void  GameLayer::reCardSprite()
 {
 	vector<CardPoint> cardwall;
@@ -1292,25 +1284,25 @@ void  GameLayer::reCardSprite()
 		for (int i = 0; i < Card_4[0].size(); i++)
 		{
 			CardPoint cardpoint;
-			auto _card_1 = ShortCardSprite::create(0,Card_4[0].at(i)); // 0
+			auto _card_1 = ShowCard::create(0, Card_4[0].at(i)); // 0
 			if (_card_1)
 			{
 				cardpoint.card_1 = _card_1;
 			}
 			i++;
-			auto _card_2 = ShortCardSprite::create(0, Card_4[0].at(i)); // 1
+			auto _card_2 = ShowCard::create(0, Card_4[0].at(i)); // 1
 			if (_card_2)
 			{
 				cardpoint.card_2 = _card_2;
 			}
 			i++;
-			auto _card_3 = ShortCardSprite::create(0, Card_4[0].at(i)); // 2
+			auto _card_3 = ShowCard::create(0, Card_4[0].at(i)); // 2
 			if (_card_3)
 			{
 				cardpoint.card_3 = _card_3;
 			}
 			i++;
-			auto _card_4 = ShortCardSprite::create(0, Card_4[0].at(i)); // 3
+			auto _card_4 = ShowCard::create(0, Card_4[0].at(i)); // 3
 			if (_card_4)
 			{
 				cardpoint.card_4 = _card_4;
@@ -1323,19 +1315,19 @@ void  GameLayer::reCardSprite()
 		for (int i = 0; i < Card_3[0].size(); i++)
 		{
 			CardPoint cardpoint;
-			auto _card_1 = ShortCardSprite::create(0, Card_3[0].at(i)); // 0
+			auto _card_1 = ShowCard::create(0, Card_3[0].at(i)); // 0
 			if (_card_1)
 			{
 				cardpoint.card_1 = _card_1;
 			}
 			i++;
-			auto _card_2 = ShortCardSprite::create(0, Card_3[0].at(i)); // 1
+			auto _card_2 = ShowCard::create(0, Card_3[0].at(i)); // 1
 			if (_card_2)
 			{
 				cardpoint.card_2 = _card_2;
 			}
 			i++;
-			auto _card_3 = ShortCardSprite::create(0, Card_3[0].at(i)); // 2
+			auto _card_3 = ShowCard::create(0, Card_3[0].at(i)); // 2
 			if (_card_3)
 			{
 				cardpoint.card_3 = _card_3;
@@ -1349,13 +1341,13 @@ void  GameLayer::reCardSprite()
 		for (int i = 0; i < Card_2[0].size(); i++)
 		{
 			CardPoint cardpoint;
-			auto _card_1 = ShortCardSprite::create(0, Card_2[0].at(i)); // 0
+			auto _card_1 = ShowCard::create(0, Card_2[0].at(i)); // 0
 			if (_card_1)
 			{
 				cardpoint.card_1 = _card_1;
 			}
 			i++;
-			auto _card_2 = ShortCardSprite::create(0, Card_2[0].at(i)); // 1
+			auto _card_2 = ShowCard::create(0, Card_2[0].at(i)); // 1
 			if (_card_2)
 			{
 				cardpoint.card_2 = _card_2;
@@ -1372,7 +1364,7 @@ void  GameLayer::reCardSprite()
 			CardPoint cardpoint;
 			if (i != Card_1[0].size())
 			{
-				auto _card_1 = ShortCardSprite::create(0, Card_1[0].at(i)); // 0
+				auto _card_1 = ShowCard::create(0, Card_1[0].at(i)); // 0
 				if (_card_1)
 				{
 					cardpoint.card_1 = _card_1;
@@ -1385,7 +1377,7 @@ void  GameLayer::reCardSprite()
 			}
 			if (i != Card_1[0].size())
 			{
-				auto _card_2 = ShortCardSprite::create(0, Card_1[0].at(i)); // 1
+				auto _card_2 = ShowCard::create(0, Card_1[0].at(i)); // 1
 				if (_card_2)
 				{
 					cardpoint.card_2 = _card_2;
@@ -1398,7 +1390,7 @@ void  GameLayer::reCardSprite()
 			}
 			if (i != Card_1[0].size())
 			{
-				auto _card_3 = ShortCardSprite::create(0, Card_1[0].at(i)); // 2
+				auto _card_3 = ShowCard::create(0, Card_1[0].at(i)); // 2
 				if (_card_3)
 				{
 					cardpoint.card_3 = _card_3;
@@ -1421,25 +1413,25 @@ void  GameLayer::reCardSprite()
 		for (int i = 0; i < Card_4[1].size(); i++)
 		{
 			CardPoint cardpoint;
-			auto _card_1 = ShortCardSprite::create(1, Card_4[1].at(i)); // 0
+			auto _card_1 = ShowCard::create(1, Card_4[1].at(i)); // 0
 			if (_card_1)
 			{
 				cardpoint.card_1 = _card_1;
 			}
 			i++;
-			auto _card_2 = ShortCardSprite::create(1, Card_4[1].at(i)); // 1
+			auto _card_2 = ShowCard::create(1, Card_4[1].at(i)); // 1
 			if (_card_2)
 			{
 				cardpoint.card_2 = _card_2;
 			}
 			i++;
-			auto _card_3 = ShortCardSprite::create(1, Card_4[1].at(i)); // 2
+			auto _card_3 = ShowCard::create(1, Card_4[1].at(i)); // 2
 			if (_card_3)
 			{
 				cardpoint.card_3 = _card_3;
 			}
 			i++;
-			auto _card_4 = ShortCardSprite::create(1, Card_4[1].at(i)); // 3
+			auto _card_4 = ShowCard::create(1, Card_4[1].at(i)); // 3
 			if (_card_4)
 			{
 				cardpoint.card_4 = _card_4;
@@ -1452,19 +1444,19 @@ void  GameLayer::reCardSprite()
 		for (int i = 0; i < Card_3[1].size(); i++)
 		{
 			CardPoint cardpoint;
-			auto _card_1 = ShortCardSprite::create(1, Card_3[1].at(i)); // 0
+			auto _card_1 = ShowCard::create(1, Card_3[1].at(i)); // 0
 			if (_card_1)
 			{
 				cardpoint.card_1 = _card_1;
 			}
 			i++;
-			auto _card_2 = ShortCardSprite::create(1, Card_3[1].at(i)); // 1
+			auto _card_2 = ShowCard::create(1, Card_3[1].at(i)); // 1
 			if (_card_2)
 			{
 				cardpoint.card_2 = _card_2;
 			}
 			i++;
-			auto _card_3 = ShortCardSprite::create(1, Card_3[1].at(i)); // 2
+			auto _card_3 = ShowCard::create(1, Card_3[1].at(i)); // 2
 			if (_card_3)
 			{
 				cardpoint.card_3 = _card_3;
@@ -1478,13 +1470,13 @@ void  GameLayer::reCardSprite()
 		for (int i = 0; i < Card_2[0].size(); i++)
 		{
 			CardPoint cardpoint;
-			auto _card_1 = ShortCardSprite::create(1, Card_2[1].at(i)); // 0
+			auto _card_1 = ShowCard::create(1, Card_2[1].at(i)); // 0
 			if (_card_1)
 			{
 				cardpoint.card_1 = _card_1;
 			}
 			i++;
-			auto _card_2 = ShortCardSprite::create(1, Card_2[1].at(i)); // 1
+			auto _card_2 = ShowCard::create(1, Card_2[1].at(i)); // 1
 			if (_card_2)
 			{
 				cardpoint.card_2 = _card_2;
@@ -1501,7 +1493,7 @@ void  GameLayer::reCardSprite()
 			CardPoint cardpoint;
 			if (i != Card_1[1].size())
 			{
-				auto _card_1 = ShortCardSprite::create(1, Card_1[1].at(i)); // 0
+				auto _card_1 = ShowCard::create(1, Card_1[1].at(i)); // 0
 				if (_card_1)
 				{
 					cardpoint.card_1 = _card_1;
@@ -1514,7 +1506,7 @@ void  GameLayer::reCardSprite()
 			}
 			if (i != Card_1[1].size())
 			{
-				auto _card_2 = ShortCardSprite::create(1, Card_1[1].at(i)); // 1
+				auto _card_2 = ShowCard::create(1, Card_1[1].at(i)); // 1
 				if (_card_2)
 				{
 					cardpoint.card_2 = _card_2;
@@ -1527,7 +1519,7 @@ void  GameLayer::reCardSprite()
 			}
 			if (i != Card_1[1].size())
 			{
-				auto _card_3 = ShortCardSprite::create(1, Card_1[1].at(i)); // 2
+				auto _card_3 = ShowCard::create(1, Card_1[1].at(i)); // 2
 				if (_card_3)
 				{
 					cardpoint.card_3 = _card_3;

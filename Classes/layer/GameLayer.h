@@ -17,7 +17,22 @@ using namespace ui;
 	1 下家
 	2 自己
 */
+//shuaxin分容器装牌
+struct CardPoint
+{
+	ShowCard*		card_4;
+	ShowCard*		card_3;
+	ShowCard*		card_2;
+	ShowCard*		card_1;
 
+	CardPoint()
+	{
+		card_4 = nullptr;
+		card_3 = nullptr;
+		card_2 = nullptr;
+		card_1 = nullptr;
+	}
+};
 class GameLayer :public Layer
 {
 public:
