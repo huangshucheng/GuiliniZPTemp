@@ -104,6 +104,9 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		{
 			for (auto &_notChi : m_NotChiVec[p_type])
 			{
+				std::cout << "不能吃的牌：" << _notChi << std::endl;
+				std::cout << "手里的牌：" << vec1[0] << std::endl;
+				std::cout << "手里的牌：" << vec2[0] << std::endl;
 				if (_notChi != vec1[0] && _notChi != vec2[0])
 				{
 					m_TempChiCardVec.push_back(t_Chi);
@@ -132,6 +135,9 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		{
 			for (auto &_notChi : m_NotChiVec[p_type])
 			{
+				std::cout << "不能吃的牌：" << _notChi << std::endl;
+				std::cout << "手里的牌：" << vec2[0] << std::endl;
+				std::cout << "手里的牌：" << vec4[0] << std::endl;
 				if (_notChi != vec2[0] && _notChi != vec4[0])
 				{
 					m_TempChiCardVec.push_back(t_Chi);
@@ -160,6 +166,9 @@ bool ZiPai::checkChiA_B_C(int p_type, int p_value)			//吃顺牌
 		{
 			for (auto &_notChi : m_NotChiVec[p_type])
 			{
+				std::cout << "不能吃的牌：" << _notChi << std::endl;
+				std::cout << "手里的牌：" << vec4[0] << std::endl;
+				std::cout << "手里的牌：" << vec5[0] << std::endl;
 				if (_notChi != vec4[0] && _notChi != vec5[0])
 				{
 					m_TempChiCardVec.push_back(t_Chi);

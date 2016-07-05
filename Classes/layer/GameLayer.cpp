@@ -1010,7 +1010,7 @@ void GameLayer::initUI()
 	if (m_dipai)
 	{
 		addChild(m_dipai);
-		m_dipai->setPosition(CommonFunction::getVisibleAchor(Anchor::MidTop, Vec2(80, -75)));
+		m_dipai->setPosition(CommonFunction::getVisibleAchor(Anchor::MidTop, Vec2(180, -165)));
 	}
 
 	//机器人
@@ -1059,7 +1059,7 @@ void GameLayer::getANewCard()
 		cout << "黄庄" << endl;
 		UserDefault::getInstance()->setBoolForKey(ISHZ, true);			//黄庄	
 
-		auto delay = DelayTime::create(3.0f);
+		auto delay = DelayTime::create(2.0f);
 		auto clallfunc = CallFunc::create([](){
 			Director::getInstance()->replaceScene(TransitionFade::create(0.5f, AccountsLayer::createScene()));
 
