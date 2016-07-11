@@ -7,7 +7,8 @@
 MyCardWall::MyCardWall():
 m_GameLayer(nullptr),
 m_TempMoveCard(nullptr),
-count(0)
+count(0),
+m_RowNum(0)
 {
 
 }
@@ -179,6 +180,7 @@ bool MyCardWall::onTouchBegan(Touch *touch, Event *unused_event)
 			{
 				return false;
 			}*/
+			log("Index=%d", m_TempMoveCard->getBoardIndex());
 			return true;
 		}
 	}
@@ -199,12 +201,13 @@ void MyCardWall::onTouchEnded(Touch *touch, Event *unused_event)
 	{
 		return;
 	}
-
+	
 	if (Tools::getXValueByPos(touch->getLocation()) != Tools::getXValueByIndex(m_TempMoveCard->getBoardIndex()) 
 		&& Tools::getXValueByPos(touch->getLocation()) <10 
 		&& Tools::getXValueByPos(touch->getLocation()) >= 0
 		)
 	{
+		log("move...");
 		int moveOutX = Tools::getXValueByIndex(m_TempMoveCard->getBoardIndex());
 		//获取新的index
 		cocos2d::Vector<ShortCardSprite*> cells;
@@ -222,16 +225,17 @@ void MyCardWall::onTouchEnded(Touch *touch, Event *unused_event)
 		else
 		{
 			for (auto var : _cardList)
-			if (Tools::getXValueByIndex(var->getBoardIndex()) == Tools::getXValueByPos(touch->getLocation()))
 			{
-				cells.pushBack(var);
+				if (Tools::getXValueByIndex(var->getBoardIndex()) == Tools::getXValueByPos(touch->getLocation()))
+				{
+					cells.pushBack(var);
+				}
 			}
 		}
 
 		if (!isMAX_Y)
 		{
 			cells.pushBack(m_TempMoveCard);
-
 			//TODO 重新排列cells的大小
 			for (int i = 0; i<cells.size(); i++)
 			{
@@ -253,6 +257,41 @@ void MyCardWall::onTouchEnded(Touch *touch, Event *unused_event)
 				cells2.at(j)->setBoardIndex(10 * j + moveOutX);
 				cells2.at(j)->setPosition(Tools::getPosByIndex(cells2.at(j)->getBoardIndex()));
 			}
+			//若后面是空的，把后面的往前移动
+			if (cells2.empty())
+			{
+				cocos2d::Vector<ShortCardSprite*> cells3;
+				for (auto var2 : _cardList)
+				{
+					if (Tools::getXValueByIndex(var2->getBoardIndex()) > moveOutX)
+					{
+						cells3.pushBack(var2);
+					}
+				}
+				for (int j = 0; j<cells3.size(); j++)
+				{
+					cells3.at(j)->setBoardIndex(cells3.at(j)->getBoardIndex() - 1);
+					cells3.at(j)->setPosition(Tools::getPosByIndex(cells3.at(j)->getBoardIndex()));
+				}
+			}
+			//若前面是空的，把当前往左边移动
+			/*cocos2d::Vector<ShortCardSprite*> cells4;
+			for (auto var2 : _cardList)
+			{
+				if (Tools::getXValueByIndex(var2->getBoardIndex()) == moveOutX)
+				{
+					
+				}
+			}*/
+			std::vector<int> indexList;
+			for (auto var2 : _cardList)
+			{
+				int _index = var2->getBoardIndex() % 10;
+				//log("index=%d", _index);
+				indexList.push_back(_index);
+			}
+			//std::cout << "列数为："<<*std::max_element(indexList.begin(), indexList.end()) + 1 << std::endl;
+			m_RowNum = *std::max_element(indexList.begin(), indexList.end()) + 1;
 		}
 		else
 		{

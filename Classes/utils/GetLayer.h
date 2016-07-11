@@ -4,6 +4,7 @@
 #include "../layer/ShowOneLayer.h"
 #include "../layer/ShowZeroLayer.h"
 #include "../layer/ShowLayer.h"
+#include "../layer/CardBoard/MyCardWall.h"
 
 class GetLayer
 {
@@ -32,5 +33,4 @@ private:
 	ShowOneLayer* _oneLayer;
 	ShowZeroLayer* _zeroLayer;
 	ShowLayer* _showLayer;
-
 };

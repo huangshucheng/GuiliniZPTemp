@@ -52,6 +52,8 @@ private:
 	Vector<ShortCardSprite* > _two_CardList[2];			//两张
 	Vector<ShortCardSprite* > _one_CardList[2];			//一张
 
+public:
+	int m_RowNum;	//列数
 private:
 	GameLayer*	m_GameLayer;
 	Vector<ShortCardSprite* > _cardList;		//牌数组(总)
