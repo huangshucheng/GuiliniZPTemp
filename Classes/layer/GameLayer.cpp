@@ -159,7 +159,7 @@ bool GameLayer::init()
 		xipai();
 		_needVisible = true;
 		//log("visible=%d", _needVisible?true:false);
-		addChild(MyCardWall::create(this));
+		//addChild(MyCardWall::create(this));
 	});
 	auto _callfunc_2 = CallFunc::create([=](){
 		creatAction();

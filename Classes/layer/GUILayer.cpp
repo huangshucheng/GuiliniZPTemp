@@ -112,7 +112,7 @@ void GUILayer::showNameAndMoney()
 {
 	if (icon_left)
 	{
-		auto name_str = CommonFunction::WStrToUTF8(L"杨二狗");
+		auto name_str = CommonFunction::WStrToUTF8(L"nvkdsj");
 		auto name_lb = Label::createWithSystemFont(name_str, "arial", 20);
 		if (name_lb)
 		{
@@ -147,7 +147,7 @@ void GUILayer::showNameAndMoney()
 	}
 	if (icon_leftDown)
 	{
-		auto name_str = CommonFunction::WStrToUTF8(L"王铁柱");
+		auto name_str = CommonFunction::WStrToUTF8(L"jack");
 		auto name_lb = Label::createWithSystemFont(name_str, "arial", 20);
 		if (name_lb)
 		{
